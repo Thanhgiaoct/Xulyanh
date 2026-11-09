@@ -1,0 +1,17 @@
+{
+  "name": "Xưởng Ảnh",
+  "short_name": "Xưởng Ảnh",
+  "description": "Chỉnh sửa ảnh, xử lý hàng loạt, thư viện prompt, công cụ PDF – chạy offline",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#18191c",
+  "theme_color": "#1b1c1f",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
