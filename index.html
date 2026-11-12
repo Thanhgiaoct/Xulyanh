@@ -38,6 +38,8 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
 #tabs{display:flex;gap:2px;margin-right:6px}
 #tabs button{border-radius:var(--r);background:transparent;border-color:transparent}
 #tabs button.on{background:var(--accent2);color:#fff}
+#btnHome{border-radius:var(--r);margin-right:4px}
+#btnHome.on{background:var(--accent2);border-color:var(--accent);color:#fff}
 #menus{display:flex;gap:2px}
 #menus button{background:transparent;border-color:transparent;padding:5px 9px}
 #menus button:hover,#menus button.open{background:var(--panel2);border-color:var(--line)}
@@ -98,12 +100,20 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
 .btnrow{display:flex;gap:4px;flex-wrap:wrap;margin:4px 0}
 .btnrow button{padding:4px 8px;min-height:28px}
 #lyList{list-style:none;margin:6px 0 0;padding:0}
-#lyList li{display:flex;align-items:center;gap:6px;padding:4px;border:1px solid transparent;border-radius:var(--r);cursor:pointer}
+#lyList li{display:flex;align-items:center;gap:6px;padding:4px;border:1px solid transparent;border-radius:var(--r);cursor:pointer;touch-action:none}
 #lyList li.on{background:#2f4a73;border-color:var(--accent)}
 #lyList li canvas{width:44px;height:34px;background:repeating-conic-gradient(#555 0 25%,#777 0 50%) 0 0/10px 10px;border-radius:3px;flex:none;object-fit:contain}
 #lyList .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #lyList .eye{width:26px;min-height:26px;padding:0;background:transparent;border:0;font-size:15px}
 #lyList .off{opacity:.45}
+#lyList li.msel{background:#24406a;border-color:#6fa8ff}
+#lyList li.dragging{opacity:.4}
+#lyList li.dragover{border-color:#ffb84c;background:#4a3c1f}
+#lyList.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px}
+#lyList.grid li{flex-direction:column;align-items:stretch;text-align:center;gap:2px;padding:6px 4px;position:relative}
+#lyList.grid li canvas{width:100%;height:60px}
+#lyList.grid li .nm{flex:none;font-size:11px;order:3}
+#lyList.grid li .eye{order:4;align-self:center}
 #histList{list-style:none;margin:0;padding:0}
 #histList li{padding:6px 8px;border-radius:var(--r);cursor:pointer;border:1px solid transparent}
 #histList li:hover{background:var(--panel2)}
@@ -142,6 +152,21 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
 #dichView.on{display:flex}
 #dichFrame{flex:1;width:100%;border:0;background:#fff}
 
+/* ===== Màn hình chính (kiểu Android) ===== */
+#homeView{display:none;flex:1;min-height:0;flex-direction:column;overflow:auto;background:radial-gradient(ellipse at top,#23262c,var(--bg) 60%)}
+#homeView.on{display:flex}
+#homeHead{padding:22px 20px 10px;text-align:center;flex:none}
+#homeBrand{font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px}
+#homeGrid{flex:1;padding:6px 16px 28px;display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:18px 8px;align-content:start;justify-content:center}
+.homeSec{grid-column:1/-1;margin:14px 2px 0;font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.homeSec:first-child{margin-top:4px}
+.homeTile{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;background:transparent;border:0;padding:2px;min-height:0;border-radius:14px;-webkit-tap-highlight-color:transparent}
+.homeTile:hover{background:#ffffff0d}
+.homeTile:active{transform:scale(.93)}
+.homeIco{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:27px;box-shadow:0 3px 10px #0005,inset 0 1px 0 #ffffff26;flex:none}
+.homeLbl{font-size:11.5px;line-height:1.25;color:var(--text);text-align:center;max-width:82px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@media (max-width:480px){#homeGrid{grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:16px 4px}.homeIco{width:52px;height:52px;font-size:24px}}
+
 /* ===== Thư viện prompt ===== */
 #promptView{display:none;flex:1;min-height:0;flex-direction:column}
 #promptView.on{display:flex}
@@ -166,6 +191,11 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
 .plTile canvas{width:100%;height:100%;object-fit:cover;display:block}
 .plTile .nm{padding:4px 6px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .plTile .bd{position:absolute;top:4px;left:4px;background:#b8770d;color:#fff;font-size:11px;padding:1px 6px;border-radius:9px}
+.plTile .xdel{position:absolute;bottom:4px;right:4px;width:22px;height:22px;min-height:0;padding:0;border-radius:50%;border:1px solid #fff5;background:#0009;color:#fff;font-size:13px;line-height:1;z-index:2;display:none;align-items:center;justify-content:center}
+.plTile:hover .xdel{display:flex}
+.plTile .xdel:hover{background:#c0392b;border-color:#c0392b}
+#promptView.multi .plTile .xdel{display:none!important}
+@media (hover:none){.plTile .xdel{display:flex;background:#000a}}
 #plDetail{flex:1;min-width:0;overflow:auto;padding:12px;user-select:text;-webkit-user-select:text}
 .plBox{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;margin:0 0 10px}
 .plBox h4{margin:0 0 8px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
@@ -220,7 +250,8 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
 
 @media (max-width:820px){
   #brand,#topbar .spacer,.hm{display:none}
-  #btnUndo,#btnRedo,#btnSide{order:-1;padding:6px 12px}
+  #btnUndo,#btnRedo,.clipBtn,#btnSide{order:-1;padding:6px 12px}
+  .clipBtn{padding:6px 10px}
   #btnSide{background:var(--accent2);color:#fff;border-color:var(--accent2)}
   #workspace{flex-direction:column}
   #toolbar{order:2;width:auto;height:auto;flex-direction:row;flex-wrap:wrap;overflow:visible;border-right:0;border-top:1px solid var(--line);padding:4px;gap:2px}
@@ -229,9 +260,11 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
   #side.open{transform:none}
   .colors{flex:none;margin:0 2px}
   .tool.swap{display:none}
-  #batchView.on{flex-direction:column}
-  #bMain{min-height:40%;border-right:0;border-bottom:1px solid var(--line)}
-  #bSide{width:auto;flex:1}
+  #batchView.on{flex-direction:column;overflow-y:auto}          /* điện thoại: cả màn Hàng loạt cuộn như một trang, danh sách không bị khung thiết lập che */
+  #bMain{flex:none;min-height:0;border-right:0;border-bottom:1px solid var(--line)}
+  #bTableWrap{flex:none;height:62vh;min-height:240px}
+  #bSide{width:auto;flex:none;min-height:auto}
+  #bSide .bpane{flex:none;overflow:visible}
   .tsep{display:none}
   #statusbar .hide-m{display:none}
   #optbar .muted.small{display:none}
@@ -248,11 +281,14 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
 <div id="app">
   <header id="topbar">
     <div id="brand">◧ Xưởng Ảnh</div>
-    <div id="tabs"><button data-tab="edit" class="on">Chỉnh sửa</button><button data-tab="batch">Hàng loạt</button><button data-tab="prompt">Prompt</button><button data-tab="pdf">PDF</button><button data-tab="dich">Dịch prompt</button></div>
+    <button id="btnHome" class="on" title="Về màn hình chính">⌂<span class="hm"> Trang chủ</span></button>
     <nav id="menus"></nav>
     <div class="spacer"></div>
     <button id="btnUndo" title="Hoàn tác (Ctrl+Z)">↶<span class="hm"> Hoàn tác</span></button>
     <button id="btnRedo" title="Làm lại (Ctrl+Y)">↷<span class="hm"> Làm lại</span></button>
+    <button id="btnCopy" class="clipBtn" title="Sao chép vùng chọn / lớp đang chọn (Ctrl+C)">⧉<span class="hm"> Sao chép</span></button>
+    <button id="btnCut" class="clipBtn" title="Cắt vùng chọn: sao chép rồi xóa khỏi lớp đang chọn">✂<span class="hm"> Cắt</span></button>
+    <button id="btnPaste" class="clipBtn" title="Dán thành lớp mới (Ctrl+V)">📋<span class="hm"> Dán</span></button>
     <button id="btnSide" title="Bảng lớp / lịch sử">☰ Lớp</button>
   </header>
 
@@ -314,6 +350,11 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
 
   <section id="pdfView"></section>
   <section id="dichView"></section>
+
+  <section id="homeView" class="on">
+    <div id="homeHead"><div id="homeBrand">◧ Xưởng Ảnh</div><div class="small muted">Bấm vào một icon để mở chức năng</div></div>
+    <div id="homeGrid"></div>
+  </section>
 </div>
 <div id="modalRoot"></div>
 <input type="file" id="fileOpen" accept="image/*,application/pdf,.pdf" multiple hidden>
@@ -324,6 +365,7 @@ hr{border:0;border-top:1px solid var(--line);margin:8px 0}
 <input type="file" id="fileBatch" multiple hidden>
 <input type="file" id="fileBatchDir" webkitdirectory multiple hidden>
 <input type="file" id="fileWm" accept="image/*" hidden>
+<input type="file" id="fileChenChu" accept="image/*" multiple hidden>
 <script type="text/plain" id="pdfToolSrc"><!doctype html>
 <html lang="vi">
 <head>
@@ -8100,7 +8142,7 @@ const HIST_MAX = 80;
 const HIST_BYTES = Math.min(900, Math.max(250, (navigator.deviceMemory || 4) * 110)) * 1048576;
 function snapshot(name) {
   return {
-    name, w: D.w, h: D.h, active: D.active, sel: D.sel, nextId: D.nextId,
+    name, w: D.w, h: D.h, active: D.active, sel: D.sel, selShape: D.selShape || null, nextId: D.nextId,
     layers: D.layers.map(l => { frozen.add(l.canvas); return Object.assign({}, l, { text: l.text ? Object.assign({}, l.text) : null, pv: null }); })
   };
 }
@@ -8127,7 +8169,7 @@ function flushCommit() { if (commitTimer) { clearTimeout(commitTimer); commitTim
 function restore(i) {
   const sn = S.hist.stack[i];
   if (!sn) return;
-  D.w = sn.w; D.h = sn.h; D.active = sn.active; D.sel = sn.sel; D.nextId = Math.max(D.nextId, sn.nextId);
+  D.w = sn.w; D.h = sn.h; D.active = sn.active; D.sel = sn.sel; D.selShape = sn.selShape || null; D.nextId = Math.max(D.nextId, sn.nextId);
   D.layers = sn.layers.map(l => Object.assign({}, l, { text: l.text ? Object.assign({}, l.text) : null, pv: null }));
   S.hist.idx = i; selVer++;
   cancelToolOps();
@@ -8250,11 +8292,17 @@ function render() {
   c.save(); c.shadowColor = '#000'; c.shadowBlur = 16; c.fillStyle = '#000'; c.fillRect(x, y, w, hh); c.restore();
   c.save(); c.beginPath(); c.rect(x, y, w, hh); c.clip();
   c.fillStyle = c.createPattern(checkPat, 'repeat'); c.fillRect(x, y, w, hh);
-  c.translate(x, y); c.scale(S.zoom, S.zoom);
+  c.restore();
+  // Không giới hạn (clip) phần lớp nằm ngoài khung ảnh: kéo lớp ra ngoài khung vẫn thấy được để dễ sắp xếp/so sánh,
+  // khi xuất ảnh hoặc gộp lớp thì phần ngoài khung vẫn bị cắt bỏ như bình thường (renderLayers/renderComposite không đổi).
+  c.save(); c.translate(x, y); c.scale(S.zoom, S.zoom);
   const smooth = S.zoom < 2;
   for (const L of D.layers) drawLayer(c, L, smooth);
   c.restore();
-  if (D.sel) { const oc = buildSelOverlay(); c.imageSmoothingEnabled = false; c.drawImage(oc.c[antPhase], 0, 0); }
+  if (D.sel) {
+    if (selShapeValid()) drawShapeAnts(c);
+    else { const oc = buildSelOverlay(); c.imageSmoothingEnabled = false; c.drawImage(oc.c[antPhase], 0, 0); }
+  }
   const T = TOOLS[S.tool];
   if (T && T.overlay) { c.save(); T.overlay(c); c.restore(); }
   if (cursorInfo && T && T.cursorRing) T.cursorRing(c, cursorInfo);
@@ -8286,7 +8334,7 @@ function fitView(maxZ) {
 function updateStatus() {
   $('#stZoom').textContent = Math.round(S.zoom * 100) + '%';
   $('#stDoc').textContent = D ? `${D.w} × ${D.h} px` : '—';
-  $('#stSel').textContent = D && D.sel ? 'Vùng chọn: ' + (() => { const b = C.maskBounds(D.sel, D.w, D.h); return b ? `${b.x1 - b.x0}×${b.y1 - b.y0}` : '0'; })() : '';
+  $('#stSel').textContent = D && D.sel ? 'Vùng chọn: ' + (() => { if (selShapeValid()) { const s = shapeBBox(D.selShape); return `${s.x1 - s.x0}×${s.y1 - s.y0} (có phần ngoài khung ảnh)`; } const b = C.maskBounds(D.sel, D.w, D.h); return b ? `${b.x1 - b.x0}×${b.y1 - b.y0}` : '0'; })() : '';
   $('#selBar').hidden = !(D && D.sel);
   $('#btnUndo').disabled = !D || S.hist.idx <= 0;
   $('#btnRedo').disabled = !D || S.hist.idx >= S.hist.stack.length - 1;
@@ -8309,21 +8357,66 @@ function syncLockBtn() {
   const b = $('#mvLock'), L = D && activeLayer(); if (!b) return;
   b.textContent = L && L.lock ? '🔒 Lớp đang khóa – bấm để mở' : '🔓 Khóa lớp'; b.classList.toggle('primary', !!(L && L.lock));
 }
+let lyGridMode = false;
+function reorderLayer(fromId, toId) {                 // kéo thả: đưa lớp fromId tới ngay vị trí lớp toId (xếp chồng lên nhau theo thứ tự mới)
+  if (!D || fromId === toId) return;
+  const i = layerIndex(fromId); if (i < 0) return;
+  const [L] = D.layers.splice(i, 1);
+  let j = layerIndex(toId);
+  if (j < 0) j = D.layers.length; else if (i < j) j++;
+  D.layers.splice(Math.max(0, Math.min(j, D.layers.length)), 0, L);
+  commit('Sắp xếp lớp');
+}
+function layerDragSetup(li, L) {                       // kéo (chuột hoặc giữ ngón tay) để đổi thứ tự lớp, chồng lớp lên nhau theo ý muốn
+  let dragging = false, sx = 0, sy = 0, holdTimer = null, pid = null;
+  const clearDragover = () => $$('#lyList > li').forEach(x => x.classList.remove('dragover'));
+  const startDrag = e => { dragging = true; pid = e.pointerId; li.classList.add('dragging'); try { li.setPointerCapture(pid); } catch (_) { } };
+  li.addEventListener('pointerdown', e => {
+    if (e.button != null && e.button !== 0) return;
+    sx = e.clientX; sy = e.clientY;
+    if (e.pointerType === 'touch') holdTimer = setTimeout(() => startDrag(e), 280);
+  });
+  li.addEventListener('pointermove', e => {
+    if (!dragging) {
+      if (e.pointerType !== 'touch' && (e.buttons & 1) && Math.hypot(e.clientX - sx, e.clientY - sy) > 5) startDrag(e);
+      return;
+    }
+    e.preventDefault();
+    const el = document.elementFromPoint(e.clientX, e.clientY), over = el && el.closest('#lyList > li');
+    clearDragover(); if (over && over !== li) over.classList.add('dragover');
+  });
+  const finish = e => {
+    clearTimeout(holdTimer);
+    if (dragging) {
+      const el = document.elementFromPoint(e.clientX, e.clientY), over = el && el.closest('#lyList > li');
+      li.classList.remove('dragging'); clearDragover();
+      if (over && over !== li) reorderLayer(L.id, +over.dataset.lid);
+    }
+    dragging = false; pid = null;
+  };
+  li.addEventListener('pointerup', finish);
+  li.addEventListener('pointercancel', finish);
+}
 function updateLayersUI() {
   syncLockBtn();
   const pane = $('#pane-layers');
   if (!pane._built) buildLayersPane(pane);
   const list = $('#lyList'); list.innerHTML = '';
+  list.classList.toggle('grid', lyGridMode);
+  const gb = $('#lyGridBtn'); if (gb) gb.textContent = lyGridMode ? '☰ Danh sách' : '▦ Lưới';
   if (!D) return;
   const A = activeLayer();
+  const msel = new Set(lySelIds()); if (msel.size < 2) msel.clear();
+  const mb = $('#lyMergeBtn'); if (mb) { mb.textContent = msel.size >= 2 ? `Gộp ${msel.size} lớp` : 'Gộp xuống'; mb.classList.toggle('primary', msel.size >= 2); }
   for (let i = D.layers.length - 1; i >= 0; i--) {
     const L = D.layers[i];
-    const th = mkCanvas(44, 34), g = ctx2(th), k = Math.min(44 / L.canvas.width, 34 / L.canvas.height);
-    g.drawImage(L.canvas, (44 - L.canvas.width * k) / 2, (34 - L.canvas.height * k) / 2, L.canvas.width * k, L.canvas.height * k);
-    const li = h('li', { class: (L.id === D.active ? 'on ' : '') + (L.visible ? '' : 'off'), onclick: () => { D.active = L.id; updateLayersUI(); updatePropsUI(); rq(); } },
+    const th = mkCanvas(96, 72), g = ctx2(th), k = Math.min(96 / L.canvas.width, 72 / L.canvas.height);
+    g.drawImage(L.canvas, (96 - L.canvas.width * k) / 2, (72 - L.canvas.height * k) / 2, L.canvas.width * k, L.canvas.height * k);
+    const li = h('li', { class: (L.id === D.active ? 'on ' : '') + (msel.has(L.id) ? 'msel ' : '') + (L.visible ? '' : 'off'), 'data-lid': L.id, title: 'Ctrl + bấm: chọn thêm/bớt lớp • Shift + bấm: chọn một dải lớp • Ctrl+E: gộp các lớp đã chọn', onclick: ev => layerClick(L, ev) },
       h('button', { class: 'eye', title: 'Ẩn/hiện', onclick: ev => { ev.stopPropagation(); L.visible = !L.visible; commit(L.visible ? 'Hiện lớp' : 'Ẩn lớp'); } }, L.visible ? '👁' : '—'),
       th, h('span', { class: 'nm', ondblclick: () => renameLayer(L), title: L.name }, (L.kind === 'text' ? 'T ' : '') + L.name),
       h('button', { class: 'eye', title: L.lock ? 'Đang khóa vị trí (bấm để mở)' : 'Khóa vị trí/biến đổi', onclick: ev => { ev.stopPropagation(); L.lock = !L.lock; commit(L.lock ? 'Khóa lớp' : 'Mở khóa lớp'); } }, L.lock ? '🔒' : '🔓'));
+    layerDragSetup(li, L);
     list.append(li);
   }
   if (A) { $('#lyBlend').value = A.blend; $('#lyOp').value = A.opacity; $('#lyOpV').textContent = A.opacity + '%'; }
@@ -8335,10 +8428,14 @@ function buildLayersPane(p) {
     h('div', { class: 'btnrow' },
       h('button', { title: 'Lớp trống mới', onclick: () => addEmptyLayer() }, '＋ Lớp'),
       h('button', { class: 'needDoc', title: 'Nhân đôi lớp (Ctrl+J)', onclick: () => dupLayer() }, 'Nhân đôi'),
-      h('button', { class: 'needDoc', title: 'Gộp xuống lớp dưới (Ctrl+E)', onclick: () => mergeDown() }, 'Gộp xuống'),
+      h('button', { id: 'lyMergeBtn', class: 'needDoc', title: 'Gộp xuống lớp dưới (Ctrl+E). Ctrl + bấm nhiều lớp trong danh sách để chọn rồi gộp các lớp đó lại', onclick: () => mergeSmart() }, 'Gộp xuống'),
       h('button', { class: 'needDoc', title: 'Lên', onclick: () => moveLayer(1) }, '▲'),
       h('button', { class: 'needDoc', title: 'Xuống', onclick: () => moveLayer(-1) }, '▼'),
       h('button', { class: 'needDoc danger', title: 'Xóa lớp', onclick: () => delLayer() }, '🗑')),
+    h('div', { class: 'btnrow' },
+      h('button', { id: 'lyGridBtn', title: 'Chuyển giữa danh sách và lưới; có thể kéo (giữ ngón tay rồi kéo trên điện thoại) để sắp xếp/chồng lớp lên nhau', onclick: () => { lyGridMode = !lyGridMode; updateLayersUI(); } }, '▦ Lưới'),
+      h('button', { class: 'needDoc', title: 'AI tách nền riêng lớp đang chọn (không lẫn lớp khác, kể cả phần nằm ngoài khung ảnh)', onclick: () => aiRemoveBgLayer() }, '✨ Tách nền'),
+      h('button', { class: 'needDoc', title: 'Gộp các lớp lại rồi mở ngay khung "Chèn chữ" của Công cụ PDF & Ảnh', onclick: () => pdfSendCurrentToText() }, '🔤 Chèn chữ')),
     h('div', { class: 'row' }, h('label', null, 'Hòa trộn'),
       h('select', { id: 'lyBlend', onchange: e => { const L = activeLayer(); if (L) { L.blend = e.target.value; commit('Chế độ hòa trộn'); } } }, BLENDS.map(b => h('option', { value: b[0] }, b[1])))),
     h('div', { class: 'row' }, h('label', null, 'Độ mờ'),
@@ -8373,18 +8470,20 @@ function moveLayer(dir) {
   if (j < 0 || j >= D.layers.length) return;
   [D.layers[i], D.layers[j]] = [D.layers[j], D.layers[i]]; commit('Đổi thứ tự lớp');
 }
-function boundsOfLayers(layers) {
+function boundsOfLayers(layers, keepOutside) {          // keepOutside: giữ cả phần lớp nằm ngoài khung ảnh
   let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
   for (const L of layers) { const b = C.bbox(C.layerCorners(L)); x0 = Math.min(x0, b.x0); y0 = Math.min(y0, b.y0); x1 = Math.max(x1, b.x1); y1 = Math.max(y1, b.y1); }
-  x0 = Math.max(0, Math.floor(x0)); y0 = Math.max(0, Math.floor(y0)); x1 = Math.min(D.w, Math.ceil(x1)); y1 = Math.min(D.h, Math.ceil(y1));
-  if (x1 <= x0 || y1 <= y0) return { x: 0, y: 0, w: D.w, h: D.h };
+  x0 = Math.floor(x0); y0 = Math.floor(y0); x1 = Math.ceil(x1); y1 = Math.ceil(y1);
+  if (!keepOutside || (x1 - x0) * (y1 - y0) > 1.2e8) { x0 = Math.max(0, x0); y0 = Math.max(0, y0); x1 = Math.min(D.w, x1); y1 = Math.min(D.h, y1); }
+  if (!isFinite(x0) || x1 <= x0 || y1 <= y0) return { x: 0, y: 0, w: D.w, h: D.h };
   return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
 }
-function mergeLayers(idxs, name) {
-  const ls = idxs.map(i => D.layers[i]), b = boundsOfLayers(ls);
+function mergeLayers(idxs, name, o) {
+  o = o || {};
+  const ls = idxs.map(i => D.layers[i]), b = boundsOfLayers(ls, o.keepOutside);
   const cv = renderLayers(ls, b.x, b.y, b.w, b.h, 1);
   const L = layerFromCanvas(cv, name, b.x, b.y);
-  const top = Math.min(...idxs);
+  const top = o.atTop ? Math.max(...idxs) - (idxs.length - 1) : Math.min(...idxs);   // atTop: lớp gộp nằm ở chỗ lớp trên cùng đã chọn
   for (const i of idxs.slice().sort((a, c) => c - a)) D.layers.splice(i, 1);
   D.layers.splice(top, 0, L); D.active = L.id;
 }
@@ -8392,12 +8491,43 @@ function mergeDown() {
   const A = activeLayer(); if (!A) return;
   const i = layerIndex(A.id);
   if (i === 0) { toast('Không có lớp phía dưới'); return; }
-  mergeLayers([i - 1, i], D.layers[i - 1].name); commit('Gộp lớp');
+  mergeLayers([i - 1, i], D.layers[i - 1].name, { keepOutside: true }); commit('Gộp lớp');
 }
 function mergeVisible() {
   const idx = D.layers.map((l, i) => l.visible ? i : -1).filter(i => i >= 0);
   if (idx.length < 2) { toast('Cần ít nhất 2 lớp đang hiện'); return; }
-  mergeLayers(idx, 'Đã gộp'); commit('Gộp các lớp hiện');
+  mergeLayers(idx, 'Đã gộp', { keepOutside: true }); commit('Gộp các lớp hiện');
+}
+/* ---------- Chọn nhiều lớp (Ctrl/Shift + bấm trong khung Lớp) rồi gộp (Ctrl+E) ---------- */
+let lySel = new Set(), lySelDoc = null;
+function lySelIds() {
+  if (!D || lySelDoc !== D) return [];
+  const have = new Set(D.layers.map(l => l.id));
+  return [...lySel].filter(id => have.has(id));
+}
+function layerClick(L, ev) {
+  if (lySelDoc !== D) { lySel = new Set(); lySelDoc = D; }
+  if (ev && (ev.ctrlKey || ev.metaKey)) {
+    if (!lySel.size && D.active != null) lySel.add(D.active);
+    if (lySel.has(L.id) && lySel.size > 1) { lySel.delete(L.id); if (D.active === L.id) D.active = [...lySel].pop(); }
+    else { lySel.add(L.id); D.active = L.id; }
+  } else if (ev && ev.shiftKey && D.active != null && layerIndex(D.active) >= 0) {
+    const a = layerIndex(D.active), b = layerIndex(L.id);
+    lySel = new Set(D.layers.slice(Math.min(a, b), Math.max(a, b) + 1).map(l => l.id)); D.active = L.id;
+  } else { lySel.clear(); D.active = L.id; }
+  updateLayersUI(); updatePropsUI(); rq();
+}
+function mergeSelectedLayers(ids) {
+  const idxs = ids.map(layerIndex).filter(i => i >= 0).sort((a, c) => a - c);
+  if (idxs.length < 2) { mergeDown(); return; }
+  mergeLayers(idxs, D.layers[idxs[idxs.length - 1]].name, { keepOutside: true, atTop: true });
+  lySel.clear(); commit(`Gộp ${idxs.length} lớp`);
+  toast(`Đã gộp ${idxs.length} lớp thành một (Ctrl+Z để hoàn tác)`, 3000);
+}
+function mergeSmart() {                                  // Ctrl+E: có chọn nhiều lớp → gộp các lớp đó; không thì gộp xuống lớp dưới
+  if (!D) return;
+  const ids = lySelIds();
+  if (ids.length >= 2) mergeSelectedLayers(ids); else mergeDown();
 }
 function flattenAll() {
   if (D.layers.length < 2) return;
@@ -8744,12 +8874,72 @@ $('#zFit').onclick = () => fitView();
 $('#z100').onclick = () => setZoom(1);
 
 /* --- gộp vùng chọn --- */
-function applySelection(shape, name, e) {
+function applySelection(shape, name, e, vshape) {
   const mode = e && e.shift && e.alt ? 'int' : e && e.shift ? 'add' : e && e.alt ? 'sub' : S.selMode;
   const m = C.maskCombine(D.sel, shape, mode);
   D.sel = m && C.maskCount(m) > 0 ? m : (mode === 'sub' || mode === 'int' ? null : m);
   if (D.sel && !D.sel.some(v => v)) D.sel = null;
+  D.selShape = null;
+  if (vshape && mode === 'replace' && shapeOutside(vshape)) {   // vùng chọn (chữ nhật/elip/thòng lọng) lấn ra ngoài khung ảnh: nhớ cả hình để sao chép/cắt được phần ngoài khung
+    if (!D.sel) D.sel = new Uint8Array(D.w * D.h);
+    vshape.mask = D.sel; D.selShape = vshape;
+  }
   selVer++; commit(name || 'Chọn vùng');
+}
+
+/* ---------- Vùng chọn dạng hình được phép nằm ngoài khung ảnh (cho các lớp kéo ra ngoài khung) ---------- */
+function selShapeValid() { return !!(D && D.sel && D.selShape && D.selShape.mask === D.sel); }
+function shapeBBox(sh) {
+  let x0, y0, x1, y1;
+  if (sh.kind === 'poly') { x0 = y0 = Infinity; x1 = y1 = -Infinity; for (const q of sh.pts) { x0 = Math.min(x0, q[0]); y0 = Math.min(y0, q[1]); x1 = Math.max(x1, q[0]); y1 = Math.max(y1, q[1]); } }
+  else { x0 = Math.min(sh.x0, sh.x1); x1 = Math.max(sh.x0, sh.x1); y0 = Math.min(sh.y0, sh.y1); y1 = Math.max(sh.y0, sh.y1); }
+  const f = Math.ceil(sh.feather || 0);
+  return { x0: Math.floor(x0) - f, y0: Math.floor(y0) - f, x1: Math.ceil(x1) + f, y1: Math.ceil(y1) + f };
+}
+function shapeOutside(sh) { const b = shapeBBox(sh); return b.x1 - b.x0 >= 2 && b.y1 - b.y0 >= 2 && (b.x0 < 0 || b.y0 < 0 || b.x1 > D.w || b.y1 > D.h); }
+function shapeMaskLocal(sh, b) {                       // mặt nạ của hình trong khung b (toạ độ ảnh), không bị giới hạn trong khung tài liệu
+  const w = b.x1 - b.x0, hh = b.y1 - b.y0;
+  let m = sh.kind === 'rect' ? C.rasterRect(sh.x0 - b.x0, sh.y0 - b.y0, sh.x1 - b.x0, sh.y1 - b.y0, w, hh)
+    : sh.kind === 'ellipse' ? C.rasterEllipse(sh.x0 - b.x0, sh.y0 - b.y0, sh.x1 - b.x0, sh.y1 - b.y0, w, hh)
+    : C.rasterPolygon(sh.pts.map(q => [q[0] - b.x0, q[1] - b.y0]), w, hh);
+  if (sh.feather) m = C.maskBlur(m, w, hh, sh.feather);
+  return m;
+}
+function shapePath(c, sh, map) {                       // vẽ đường bao của hình (map: đổi toạ độ ảnh → toạ độ cần vẽ)
+  c.beginPath();
+  if (sh.kind === 'poly') sh.pts.forEach((q, i) => { const s = map(q[0], q[1]); i ? c.lineTo(s[0], s[1]) : c.moveTo(s[0], s[1]); });
+  else if (sh.kind === 'rect') { const a = map(sh.x0, sh.y0), b = map(sh.x1, sh.y1); c.rect(a[0], a[1], b[0] - a[0], b[1] - a[1]); }
+  else { const a = map(sh.x0, sh.y0), b = map(sh.x1, sh.y1); c.ellipse((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, Math.abs(b[0] - a[0]) / 2, Math.abs(b[1] - a[1]) / 2, 0, 0, 7); }
+  c.closePath();
+}
+function drawShapeAnts(c) {                            // "kiến bò" theo đúng hình chọn, kể cả phần ngoài khung ảnh
+  const sh = D.selShape; c.save(); c.lineWidth = 1;
+  shapePath(c, sh, d2s);
+  c.setLineDash([5, 4]); c.lineDashOffset = antPhase ? 4 : 0; c.strokeStyle = '#fff'; c.stroke();
+  c.lineDashOffset = antPhase ? 0 : 4; c.strokeStyle = '#000'; c.stroke();
+  c.restore();
+}
+function extractShapeSel(merged) {                     // lấy điểm ảnh trong hình chọn, kể cả phần lớp nằm ngoài khung ảnh
+  const sh = D.selShape, b = shapeBBox(sh), w = b.x1 - b.x0, hh = b.y1 - b.y0;
+  if (w < 1 || hh < 1) return null;
+  const A = activeLayer();
+  const cv = merged || !A ? renderLayers(D.layers, b.x0, b.y0, w, hh, 1) : renderLayers([Object.assign({}, A, { opacity: 100, blend: 'source-over' })], b.x0, b.y0, w, hh, 1);
+  const m = shapeMaskLocal(sh, b), g = ctx2(cv, true), id = g.getImageData(0, 0, w, hh);
+  let any = false;
+  for (let i = 0; i < m.length; i++) { const a = id.data[i * 4 + 3] * m[i] / 255; id.data[i * 4 + 3] = a; if (a > 8) any = true; }
+  if (!any) return null;
+  g.putImageData(id, 0, 0);
+  return { cv, x: b.x0, y: b.y0 };
+}
+function eraseShapeOnLayer(L, sh, keepInside) {        // xóa phần lớp trong hình chọn (keepInside: chỉ giữ phần trong hình) mà không "nướng" lớp (giữ phần ngoài khung, giữ cỡ/xoay)
+  if (L.kind === 'text') bakeLayer(L);
+  L.canvas = cloneCanvas(L.canvas);
+  const cw = L.canvas.width, ch = L.canvas.height, g = ctx2(L.canvas);
+  const M = new DOMMatrix().translate(L.cx, L.cy).rotate(L.rot * 180 / Math.PI).scale(L.fx ? -1 : 1, L.fy ? -1 : 1).translate(-L.w / 2, -L.h / 2).scale(L.w / cw, L.h / ch);
+  g.save(); g.setTransform(M.inverse()); g.globalCompositeOperation = keepInside ? 'destination-in' : 'destination-out'; g.fillStyle = '#000';
+  if (sh.feather) g.filter = `blur(${Math.max(0.5, sh.feather / 2 * cw / L.w)}px)`;
+  shapePath(g, sh, (x, y) => [x, y]); g.fill();
+  g.restore();
 }
 const selModeOf = e => e && e.shift && e.alt ? 'int' : e && e.shift ? 'add' : e && e.alt ? 'sub' : S.selMode;
 
@@ -8787,7 +8977,7 @@ defTool('move', 'Di chuyển / Biến đổi', 'V', {
   cursor: 'default',
   opts(bar) {
     bar.append(optCheck('Tự chọn lớp khi bấm', O.move, 'auto'), optCheck('Giữ tỉ lệ (góc)', O.move, 'prop'), h('span', { class: 'sep' }),
-      h('button', { id: 'mvLock', onclick: () => toggleLayerLock() }, '🔓 Khóa lớp'), optBtn('🗑 Xóa lớp', () => delLayer(), 'danger', 'Xóa lớp đang chọn (phím Delete)'), optBtn('🎨 Hòa màu', () => harmonizeDialog(), '', 'Kéo màu/ánh sáng của lớp về khớp với nền xung quanh'), optBtn('✂ Cắt theo vùng chọn', () => clipToSelection(), '', 'Chỉ giữ phần lớp nằm trong vùng chọn (ví dụ: áo mới chỉ nằm trong chỗ áo cũ)'), optBtn('⇋', () => { const L = activeLayer(); if (L) { L.fx = !L.fx; commit('Lật ngang lớp'); } }, '', 'Lật ngang lớp'),
+      h('button', { id: 'mvLock', onclick: () => toggleLayerLock() }, '🔓 Khóa lớp'), optBtn('🗑 Xóa lớp', () => delLayer(), 'danger', 'Xóa lớp đang chọn (phím Delete)'), optBtn('✨ Tách nền lớp', () => aiRemoveBgLayer(), '', 'AI tách nền riêng lớp đang chọn (không lẫn lớp khác, kể cả phần nằm ngoài khung ảnh)'), optBtn('🎨 Hòa màu', () => harmonizeDialog(), '', 'Kéo màu/ánh sáng của lớp về khớp với nền xung quanh'), optBtn('✂ Cắt theo vùng chọn', () => clipToSelection(), '', 'Chỉ giữ phần lớp nằm trong vùng chọn (ví dụ: áo mới chỉ nằm trong chỗ áo cũ)'), optBtn('⇋', () => { const L = activeLayer(); if (L) { L.fx = !L.fx; commit('Lật ngang lớp'); } }, '', 'Lật ngang lớp'),
       optBtn('⇅', () => { const L = activeLayer(); if (L) { L.fy = !L.fy; commit('Lật dọc lớp'); } }, '', 'Lật dọc lớp'),
       optBtn('⟳90°', () => { const L = activeLayer(); if (L) rotateLayerBy(L, 90, 'Xoay 90°'); }, '', 'Xoay 90° (ảnh nền phủ kín khung: xoay cả ảnh, khung đổi theo)'),
       h('span', { class: 'muted small' }, 'Kéo ô vuông: đổi cỡ • kéo chấm tròn ở góc/trên: xoay (Shift = 15°) • Delete: xóa lớp • mũi tên: dịch 1px'));
@@ -8914,7 +9104,7 @@ defTool('marq', 'Chọn hình chữ nhật / elip', 'M', {
     if (O.marq.center) { x0 -= dx; y0 -= dy; }
     let m = O.marq.shape === 'rect' ? C.rasterRect(x0, y0, x1, y1, D.w, D.h) : C.rasterEllipse(x0, y0, x1, y1, D.w, D.h);
     if (O.marq.feather) m = C.maskBlur(m, D.w, D.h, O.marq.feather);
-    applySelection(m, 'Chọn vùng', d.e);
+    applySelection(m, 'Chọn vùng', d.e, { kind: O.marq.shape === 'rect' ? 'rect' : 'ellipse', x0, y0, x1, y1, feather: O.marq.feather || 0 });
   },
   cancel() { drag = null; },
   overlay(c) {
@@ -8939,7 +9129,7 @@ function finishLasso(e) {
   if (pts.length < 3) { rq(); return; }
   let m = C.rasterPolygon(pts, D.w, D.h);
   if (O.lasso.feather) m = C.maskBlur(m, D.w, D.h, O.lasso.feather);
-  applySelection(m, 'Chọn vùng (vòng thòng lọng)', e || {});
+  applySelection(m, 'Chọn vùng (vòng thòng lọng)', e || {}, { kind: 'poly', pts: pts.map(q => [q[0], q[1]]), feather: O.lasso.feather || 0 });
 }
 defTool('lasso', 'Chọn tự do (thòng lọng)', 'L', {
   opts(bar) {
@@ -9100,7 +9290,10 @@ function prepPaintLayer() {
   bakeLayer(A);
   return A;
 }
-function deleteKey() { if (D.sel) eraseSel(false); else delLayer(); }
+function deleteKey() {
+  if (selShapeValid()) { const A = activeLayer(); if (A) { eraseShapeOnLayer(A, D.selShape); commit('Xóa vùng chọn'); } return; }
+  if (D.sel) eraseSel(false); else delLayer();
+}
 function eraseSel(keepInside) {
   const A = prepPaintLayer(); if (!A) return;
   if (!D.sel && !keepInside) { toast('Chưa có vùng chọn'); return; }
@@ -9124,6 +9317,7 @@ function fillSel(hex) {
   g.putImageData(id, 0, 0); commit('Tô màu');
 }
 function extractSel(merged) {
+  if (selShapeValid()) return extractShapeSel(merged);
   const A = activeLayer();
   const b = D.sel ? C.maskBounds(D.sel, D.w, D.h) : { x0: 0, y0: 0, x1: D.w, y1: D.h };
   if (!b) return null;
@@ -9136,24 +9330,59 @@ function extractSel(merged) {
   }
   return { cv, x: b.x0, y: b.y0 };
 }
+function canvasHasPixels(cv) {               // có điểm ảnh nào nhìn thấy được không (để không sao chép/dán ra lớp trống)
+  if (!cv || !cv.width || !cv.height) return false;
+  const d = ctx2(cv, true).getImageData(0, 0, cv.width, cv.height).data;
+  for (let i = 3; i < d.length; i += 4) if (d[i] > 8) return true;
+  return false;
+}
+function extractSelVisible(merged) {          // lấy vùng chọn; nếu lớp đang chọn không có hình ở vùng đó thì lấy hình nhìn thấy (gộp các lớp)
+  let r = extractSel(merged), fell = false;
+  if ((!r || !canvasHasPixels(r.cv)) && !merged) { const r2 = extractSel(true); if (r2 && canvasHasPixels(r2.cv)) { r = r2; fell = true; } }
+  if (!r || !canvasHasPixels(r.cv)) return null;
+  r.fell = fell; return r;
+}
 async function copySel(merged) {
   if (!D) return;
-  const r = extractSel(merged); if (!r) { toast('Không có gì để sao chép'); return; }
-  S.clip = r; toast('Đã sao chép');
+  const r = extractSelVisible(merged); if (!r) { toast('Vùng chọn không có hình nào để sao chép (vùng trống/trong suốt)'); return; }
+  r.doc = D;                              // nhớ sao chép từ tài liệu (tab) nào, để dán sang tab khác không bị lệch ra ngoài khung
+  S.clip = r;
+  toast(r.fell ? 'Lớp đang chọn không có hình ở vùng này – đã sao chép hình nhìn thấy (gộp các lớp)' : 'Đã sao chép', r.fell ? 4500 : 2600);
   try { const blob = await new Promise(res => r.cv.toBlob(res, 'image/png')); await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); } catch (e) { /* trình duyệt không cho: vẫn dùng bộ nhớ trong */ }
 }
+async function cutSel() {                     // Cắt: sao chép vùng chọn của lớp đang chọn rồi xóa vùng đó khỏi lớp
+  if (!D) { toast('Chưa mở ảnh'); return; }
+  const A = activeLayer(); if (!A) return;
+  if (!D.sel) { toast('Hãy chọn vùng cần cắt trước (công cụ chọn khung / thòng lọng…)'); return; }
+  const r = extractSel(false);
+  if (!r || !canvasHasPixels(r.cv)) { toast('Lớp đang chọn không có hình ở vùng chọn – bấm chọn đúng lớp trong khung Lớp rồi làm lại'); return; }
+  r.doc = D; S.clip = r;
+  if (selShapeValid()) { eraseShapeOnLayer(A, D.selShape); commit('Cắt'); } else eraseSel(false);
+  toast('Đã cắt – bấm 📋 Dán để dán ra lớp mới');
+  try { const blob = await new Promise(res => r.cv.toBlob(res, 'image/png')); await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]); } catch (e) { /* dùng bộ nhớ trong */ }
+}
 function pasteClip(cv, x, y, name) {
+  if (!canvasHasPixels(cv)) { toast('Ảnh trong bộ nhớ tạm trống (trong suốt) – hãy sao chép lại'); return; }
   if (!D) { newDocFromCanvas(cv, 'Dán'); return; }
   const L = layerFromCanvas(cv, name || 'Dán', x == null ? Math.round((D.w - cv.width) / 2) : x, y == null ? Math.round((D.h - cv.height) / 2) : y);
   addLayerObj(L, D.active ? layerIndex(D.active) + 1 : undefined); commit('Dán');
 }
+function pasteInternalClip() {               // dán từ bộ nhớ trong của phần mềm (S.clip): giữ nguyên vị trí nếu dán vào đúng tab đã sao chép, căn giữa nếu dán sang tab/ảnh khác
+  if (!S.clip || !D) return false;
+  const sameDoc = S.clip.doc === D;
+  pasteClip(cloneCanvas(S.clip.cv), sameDoc ? S.clip.x : null, sameDoc ? S.clip.y : null);
+  return true;
+}
 function layerViaCopy(cut) {
   if (!D) return;
   if (!D.sel) { dupLayer(); return; }
-  const r = extractSel(false); if (!r) return;
+  const shaped = selShapeValid();
+  const r = extractSel(false);
+  if (!r || !canvasHasPixels(r.cv)) { toast('Lớp đang chọn không có hình ở vùng chọn – bấm chọn đúng lớp trong khung Lớp rồi làm lại'); return; }
   const A = activeLayer();
   const L = layerFromCanvas(r.cv, 'Vùng chọn', r.x, r.y);
-  if (cut && A) {
+  if (cut && A && shaped) eraseShapeOnLayer(A, D.selShape);
+  else if (cut && A) {
     bakeLayer(A); A.canvas = cloneCanvas(A.canvas);
     const g = ctx2(A.canvas, true), w = A.canvas.width, hh = A.canvas.height, id = g.getImageData(0, 0, w, hh), m = layerMask(A);
     for (let i = 0, j = 0; j < w * hh; i += 4, j++) id.data[i + 3] *= (255 - m[j]) / 255;
@@ -10037,14 +10266,14 @@ window.addEventListener('paste', async e => {
   if (/input|textarea|select/i.test((e.target.tagName || ''))) return;
   const items = Array.from(e.clipboardData && e.clipboardData.items || []).filter(i => i.type.startsWith('image/'));
   if (items.length) { e.preventDefault(); const f = items[0].getAsFile(); const cv = await fileToCanvas(f); if (!D) newDocFromCanvas(cv, 'Ảnh dán'); else pasteClip(cv); }
-  else if (S.clip && D) { e.preventDefault(); pasteClip(cloneCanvas(S.clip.cv), S.clip.x, S.clip.y); }
+  else if (S.clip && D) { e.preventDefault(); pasteInternalClip(); }
 });
 async function pasteFromMenu() {
   try {
     const items = await navigator.clipboard.read();
     for (const it of items) { const t = it.types.find(x => x.startsWith('image/')); if (t) { const b = await it.getType(t), cv = await fileToCanvas(new File([b], 'dan.png', { type: t })); if (!D) newDocFromCanvas(cv, 'Ảnh dán'); else pasteClip(cv); return; } }
   } catch (e) { /* bị chặn */ }
-  if (S.clip && D) pasteClip(cloneCanvas(S.clip.cv), S.clip.x, S.clip.y); else toast('Không có gì để dán (hoặc trình duyệt chặn). Thử Ctrl+V.');
+  if (!pasteInternalClip()) toast('Không có gì để dán (hoặc trình duyệt chặn). Thử Ctrl+V.');
 }
 
 /* ---------- Xuất ảnh ---------- */
@@ -10192,7 +10421,7 @@ $('#fileLibDir').onchange = e => { libAddFiles(e.target.files); e.target.value =
 /* ---------- Menu ---------- */
 const need = fn => () => { if (!D) { toast('Hãy mở ảnh trước'); return; } fn(); };
 const MENUS = [
-  ['Tệp', [['Mở ảnh…', () => $('#fileOpen').click(), 'Ctrl+O'], ['Thêm ảnh làm lớp…', () => $('#fileAdd').click()], ['Tạo ảnh trống…', newDocDialog], ['🗂 Thư viện prompt (json + ảnh)…', () => $('#tabs button[data-tab=prompt]').click()], ['📄 Mở file PDF (mỗi trang một tab)…', () => $('#fileOpen').click()], ['📄 Gửi ảnh sang Công cụ PDF…', pdfSendDialog], ['📄 Công cụ PDF & Ảnh', () => $('#tabs button[data-tab=pdf]').click()], ['🌐 Dịch prompt tạo ảnh (Việt → Anh)', () => $('#tabs button[data-tab=dich]').click()], ['Đóng ảnh (đóng tab)', need(tabsCloseCurrent)], '-',
+  ['Tệp', [['Mở ảnh…', () => $('#fileOpen').click(), 'Ctrl+O'], ['🔤 Mở ảnh & chèn chữ…', () => openChenChuDialog()], ['Thêm ảnh làm lớp…', () => $('#fileAdd').click()], ['Tạo ảnh trống…', newDocDialog], ['🗂 Thư viện prompt (json + ảnh)…', () => switchView('prompt')], ['📄 Mở file PDF (mỗi trang một tab)…', () => $('#fileOpen').click()], ['📄 Gửi ảnh sang Công cụ PDF…', pdfSendDialog], ['🔤 Chèn chữ vào ảnh đang mở', need(() => pdfSendCurrentToText())], ['📄 Công cụ PDF & Ảnh', () => switchView('pdf')], ['🌐 Dịch prompt tạo ảnh (Việt → Anh)', () => switchView('dich')], ['⌂ Về màn hình chính', () => switchView('home')], ['Đóng ảnh (đóng tab)', need(tabsCloseCurrent)], '-',
     ['Mở dự án nhiều lớp (.xla)…', () => $('#fileProj').click()], ['Lưu dự án nhiều lớp…', need(saveProject), 'Ctrl+Shift+S'], ['Xuất ảnh (JPG/PNG/WebP)…', need(exportDialog), 'Ctrl+S']]],
   ['Sửa', [['Hoàn tác', undo, 'Ctrl+Z'], ['Làm lại', redo, 'Ctrl+Y'], '-', ['Sao chép', need(() => copySel(false)), 'Ctrl+C'], ['Sao chép (gộp mọi lớp)', need(() => copySel(true)), 'Ctrl+Shift+C'], ['Dán', pasteFromMenu, 'Ctrl+V'],
     ['Xóa vùng chọn (không có vùng chọn: xóa lớp)', need(deleteKey), 'Del'], ['Tô màu chính vào vùng chọn', need(() => fillSel(S.fg)), 'Alt+Backspace'], ['Tô màu nền vào vùng chọn', need(() => fillSel(S.bg)), 'Ctrl+Backspace'],
@@ -10201,11 +10430,11 @@ const MENUS = [
     ['Xoay 90° phải', need(() => rotateDoc90(true))], ['Xoay 90° trái', need(() => rotateDoc90(false))], ['Xoay 180°', need(rotateDoc180)], ['Xoay góc bất kỳ…', need(rotateDialog)], ['Lật ngang', need(() => flipDoc(true))], ['Lật dọc', need(() => flipDoc(false))], '-',
     ['Kích thước ảnh…', need(resizeDialog)], ['Kích thước khung…', need(canvasDialog)]]],
   ['Lớp', [['Lớp trống mới', need(addEmptyLayer), 'Ctrl+Shift+N'], ['Nhân đôi lớp', need(dupLayer), 'Ctrl+J'], ['Xóa lớp', need(delLayer)], '-', ['Chèn ảnh từ máy…', () => $('#fileAdd').click()], ['Thêm chữ', need(() => { setTool('text'); toast('Bấm lên ảnh để đặt chữ'); })], '-',
-    ['Gộp xuống', need(mergeDown), 'Ctrl+E'], ['Gộp các lớp đang hiện', need(mergeVisible)], ['Gộp tất cả (làm phẳng)', need(flattenAll), 'Ctrl+Shift+E'], '-',
+    ['Gộp xuống / gộp các lớp đã chọn', need(mergeSmart), 'Ctrl+E'], ['Gộp các lớp đang hiện', need(mergeVisible)], ['Gộp tất cả (làm phẳng)', need(flattenAll), 'Ctrl+Shift+E'], '-',
     ['Đưa lên', need(() => moveLayer(1)), 'Ctrl+]'], ['Đưa xuống', need(() => moveLayer(-1)), 'Ctrl+['], ['Căn giữa khung ảnh', need(() => { const L = activeLayer(); if (L) { L.cx = D.w / 2; L.cy = D.h / 2; commit('Căn giữa lớp'); } })], ['Vừa khung ảnh', need(() => { const L = activeLayer(); if (L) fitLayerToDoc(L); })]]],
   ['Chọn', [['Chọn tất cả', need(selectAll), 'Ctrl+A'], ['Bỏ chọn', need(deselect), 'Ctrl+D'], ['Crop ảnh theo vùng chọn', need(cropToSel)], ['Vùng chọn → tab ảnh mới', need(selToNewTab)], ['Chọn ngược', need(invertSel), 'Ctrl+Shift+I'], '-', ['Làm mềm viền…', need(() => featherDialog('feather'))], ['Mở rộng…', need(() => featherDialog('grow'))], ['Thu hẹp…', need(() => featherDialog('shrink'))],
     ['Chọn theo nội dung lớp', need(selFromLayer)], '-', ['Tách nền: giữ vùng chọn, xóa phần còn lại', need(() => eraseSel(true))], '-',
-    ['✨ Chọn chủ thể bằng AI (cả ảnh)', need(aiSelectAll)], ['✨ Xóa nền bằng AI (một chạm)', need(aiRemoveBg)], ['Cài đặt AI…', aiSettingsDialog]]],
+    ['✨ Chọn chủ thể bằng AI (cả ảnh)', need(aiSelectAll)], ['✨ Xóa nền bằng AI (một chạm)', need(aiRemoveBg)], ['✨ Tách nền lớp đang chọn (AI)', need(aiRemoveBgLayer)], ['Cài đặt AI…', aiSettingsDialog]]],
   ['Chỉnh', [['Màu & ánh sáng…', need(colorDialog), 'Ctrl+M'], ['Làm nét…', need(sharpenDialog)], ['Làm mờ…', need(blurDialog)], ['Khử nhiễu…', need(denoiseDialog)], ['Làm sạch viền đen ở mép (tô trắng)…', need(borderDialog)], '-', ['👕 Thay trang phục…', need(outfitDialog)], ['🎨 Đổi màu vùng chọn (quần áo, đồ vật)…', need(recolorDialog)], ['🧵 Phủ hoa văn / chất liệu…', need(patternDialog)], ['👕 Ghép đồ từ ảnh khác…', need(garmentDialog)], ['🎨 Hòa màu lớp với nền…', need(harmonizeDialog)], '-', ['Tự động tương phản', need(quickAutoContrast)], ['Tự động màu', need(quickAutoColor)], ['Trắng đen', need(quickGray)], ['Đảo màu', need(quickInvert)]]],
   ['Xem', [['Thanh công cụ: nằm ngang', () => setToolbar('h')], ['Thanh công cụ: nằm dọc (nhiều cột)', () => setToolbar('v')], ['Nút công cụ: nhỏ', () => setToolbar(null, 'm')], ['Nút công cụ: lớn', () => setToolbar(null, 'l')], ['Nút công cụ: rất lớn (gấp đôi)', () => setToolbar(null, 'xl')], '-',
     ['Vừa khung', need(() => fitView()), 'Ctrl+0'], ['Kích thước thật 100%', need(() => setZoom(1)), 'Ctrl+1'], ['Phóng to', () => setZoom(S.zoom * 1.25), '+'], ['Thu nhỏ', () => setZoom(S.zoom / 1.25), '-'], '-',
@@ -10263,7 +10492,7 @@ document.addEventListener('keydown', e => {
     if (kl === 'j') { e.preventDefault(); layerViaCopy(e.shiftKey); return; }
     if (kl === 'c') { e.preventDefault(); copySel(e.shiftKey); return; }
     if (kl === 'x') { e.preventDefault(); layerViaCopy(true); return; }
-    if (kl === 'e') { e.preventDefault(); e.shiftKey ? flattenAll() : mergeDown(); return; }
+    if (kl === 'e') { e.preventDefault(); e.shiftKey ? flattenAll() : mergeSmart(); return; }
     if (kl === 'm') { e.preventDefault(); colorDialog(); return; }
     if (kl === 'n' && e.shiftKey) { e.preventDefault(); addEmptyLayer(); return; }
     if (k === '0') { e.preventDefault(); fitView(); return; }
@@ -10294,6 +10523,25 @@ document.addEventListener('keydown', e => {
 document.addEventListener('keyup', e => { if (e.key === ' ') { S.space = false; view.style.cursor = TOOLS[S.tool].cursor || 'crosshair'; } });
 window.addEventListener('beforeunload', e => { if (D && tabsAnyDirty()) { e.preventDefault(); e.returnValue = ''; } });
 
+/* ---------- Chuyển màn hình (Trang chủ kiểu Android / Chỉnh sửa / Hàng loạt / Prompt / PDF / Dịch prompt) ---------- */
+function switchView(tab) {
+  const edit = tab === 'edit', home = tab === 'home';
+  $('#btnHome').classList.toggle('on', home);
+  $('#editView').style.display = edit ? 'flex' : 'none';
+  $('#batchView').classList.toggle('on', tab === 'batch');
+  $('#promptView').classList.toggle('on', tab === 'prompt');
+  $('#pdfView').classList.toggle('on', tab === 'pdf');
+  $('#dichView').classList.toggle('on', tab === 'dich');
+  $('#homeView').classList.toggle('on', home);
+  if (tab === 'dich') dichToolReady().catch(e => toast('Không nạp được công cụ dịch prompt: ' + e.message, 6000));
+  if (tab === 'pdf') pdfToolReady().catch(e => toast('Không nạp được công cụ PDF: ' + e.message, 6000));
+  $('#menus').style.visibility = edit ? 'visible' : 'hidden';
+  $('#btnUndo').style.display = $('#btnRedo').style.display = home ? 'none' : '';
+  $('#btnSide').style.display = edit ? '' : 'none';                    // nút bảng Lớp chỉ dùng trong Chỉnh sửa
+  $$('.clipBtn').forEach(b => b.style.display = edit ? '' : 'none');  // Sao chép / Cắt / Dán chỉ hiện trong Chỉnh sửa
+  if (edit) resizeView();
+  if (home) homeBuild();
+}
 /* ---------- Khởi tạo giao diện ---------- */
 function onDocChanged() { /* móc nối cho tab hàng loạt nếu cần */ }
 function init() {
@@ -10302,12 +10550,10 @@ function init() {
   $('#btnSide').onclick = () => $('#side').classList.toggle('open');
   $$('#sideTabs button').forEach(b => b.onclick = () => { $$('#sideTabs button').forEach(x => x.classList.toggle('on', x === b)); $$('.pane').forEach(x => x.classList.toggle('on', x.id === 'pane-' + b.dataset.p)); if (b.dataset.p === 'lib') renderLib(); });
   $('#colFg').addEventListener('input', () => { if ($('#pane-lib').classList.contains('on')) renderLib(); });
-  $$('#tabs button').forEach(b => b.onclick = () => {
-    $$('#tabs button').forEach(x => x.classList.toggle('on', x === b));
-    const tab = b.dataset.tab, edit = tab === 'edit';
-    $('#editView').style.display = edit ? 'flex' : 'none'; $('#batchView').classList.toggle('on', tab === 'batch'); $('#promptView').classList.toggle('on', tab === 'prompt'); $('#pdfView').classList.toggle('on', tab === 'pdf'); $('#dichView').classList.toggle('on', tab === 'dich'); if (tab === 'dich') dichToolReady().catch(e => toast('Không nạp được công cụ dịch prompt: ' + e.message, 6000)); if (tab === 'pdf') pdfToolReady().catch(e => toast('Không nạp được công cụ PDF: ' + e.message, 6000)); $('#menus').style.visibility = edit ? 'visible' : 'hidden';
-    if (edit) resizeView();
-  });
+  $('#btnHome').onclick = () => switchView('home');
+  $('#btnCopy').onclick = () => { if (!D) { toast('Chưa mở ảnh'); return; } copySel(false); };
+  $('#btnCut').onclick = () => cutSel();
+  $('#btnPaste').onclick = () => pasteFromMenu();
   updateLayersUI(); updateHistUI(); updatePropsUI(); updateStatus(); renderLib(); resizeView(); render();
   if (!window.indexedDB) $('#libInfo') && ($('#libInfo').textContent = 'Trình duyệt không hỗ trợ lưu thư viện lâu dài.');
 }
@@ -10527,8 +10773,40 @@ async function aiSelectRect(rect, e, limit) {
 function aiSelectAll() { return aiSelectRect({ x0: 0, y0: 0, x1: D.w, y1: D.h }, null); }
 async function aiRemoveBg() {
   if (!D) return;
+  if (D.layers.length > 1 && activeLayer()) return aiRemoveBgLayer();   // nhiều lớp: chỉ tách nền lớp đang chọn
   await aiSelectAll();
   if (D.sel) { eraseSel(true); deselect(); toast('Đã xóa nền – ảnh nền trong suốt (Ctrl+Z để hoàn tác)', 3500); }
+}
+/* Tách nền riêng lớp đang chọn: AI nhìn đúng ảnh của lớp (cỡ gốc của lớp), không lẫn các lớp khác,
+   và xử lý được cả phần lớp nằm ngoài khung ảnh */
+async function aiRemoveBgLayer() {
+  if (!D) return;
+  if (!activeLayer()) { toast('Chưa chọn lớp'); return; }
+  if (!(await aiEnsureModel())) return;
+  await withBusy('Đang tách nền lớp bằng AI…', () => aiHandle(async () => {
+    const L = activeLayer(); if (!L) return;
+    if (L.kind === 'text') { toast('Lớp chữ không cần tách nền'); return; }
+    // không "nướng" (bake) lớp: giữ nguyên cỡ/xoay/vị trí, kể cả phần nằm ngoài khung ảnh – chỉ đổi độ trong suốt điểm ảnh của lớp
+    const src = L.canvas, w = src.width, hh = src.height;
+    const r = await aiInfer(src); if (!r) return;
+    aiStage('Đang áp mặt nạ lên lớp…'); await yieldUI();
+    const sm = mkCanvas(r.w, r.h), sg = ctx2(sm), sid = sg.createImageData(r.w, r.h);
+    for (let i = 0; i < r.data.length; i++) { sid.data[i * 4] = sid.data[i * 4 + 1] = sid.data[i * 4 + 2] = 255; sid.data[i * 4 + 3] = Math.round(r.data[i] * 255); }
+    sg.putImageData(sid, 0, 0);
+    const big = mkCanvas(w, hh), bg = ctx2(big, true); bg.imageSmoothingEnabled = true; bg.imageSmoothingQuality = 'high'; bg.drawImage(sm, 0, 0, w, hh);
+    const ma = bg.getImageData(0, 0, w, hh).data;
+    const out = cloneCanvas(src), og = ctx2(out, true), od = og.getImageData(0, 0, w, hh), d = od.data;
+    let kept = 0;
+    for (let i = 3, j = 0; j < w * hh; i += 4, j++) {
+      const k = AI_LUT[(ma[i] / 255 * 1023 + 0.5) | 0];
+      d[i] = d[i] * k / 255; if (d[i] > 24) kept++;
+    }
+    if (kept < 20) { toast('AI không thấy chủ thể nổi bật trong lớp này'); return; }
+    og.putImageData(od, 0, 0);
+    L.canvas = out; L.pv = null;
+    commit('Tách nền lớp (AI)');
+    toast('Đã tách nền lớp “' + L.name + '” (Ctrl+Z để hoàn tác)', 3500);
+  }));
 }
 
 /* ---------- Hộp thoại cài đặt AI ---------- */
@@ -10791,6 +11069,7 @@ function garmentDialog() {
 }
 function clipToSelection() {
   if (!D || !D.sel) { toast('Chưa có vùng chọn – hãy chọn vùng quần áo cũ trước'); return; }
+  if (selShapeValid()) { const A = activeLayer(); if (!A) return; eraseShapeOnLayer(A, D.selShape, true); commit('Tách nền (giữ vùng chọn)'); toast('Đã cắt lớp theo vùng chọn', 2500); return; }
   eraseSel(true); toast('Đã cắt lớp theo vùng chọn', 2500);
 }
 
@@ -10857,6 +11136,97 @@ function renderTabs() {
   });
   bar.append(h('button', { id: 'dtAdd', title: 'Mở thêm ảnh (mỗi ảnh một tab)', onclick: () => $('#fileOpen').click() }, '＋'));
   const on = bar.querySelector('.on'); if (on && on.scrollIntoView) on.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+}
+
+/* ===================== Màn hình chính kiểu Android: lưới icon, bấm icon nào chạy chức năng đó ===================== */
+function homeOpenBatch(sub) {                         // mở Hàng loạt rồi chuyển sang tab con (Đổi tên / Thư mục / Xử lý ảnh / Xuất)
+  switchView('batch');
+  const b = $(`#bSideTabs button[data-b="${sub}"]`); if (b) b.click();
+}
+function homeOpenImageFirst(fn) {                      // vào Chỉnh sửa; nếu chưa có ảnh thì mở hộp chọn ảnh trước khi chạy chức năng
+  switchView('edit');
+  if (!D) { toast('Hãy mở ảnh trước, rồi bấm lại icon này'); $('#hOpen') && $('#hOpen').click(); return; }
+  fn();
+}
+const HOME_ICONS = [
+  { sec: 'Chỉnh sửa ảnh' },
+  { ico: '🖼', bg: 'linear-gradient(145deg,#4c9bff,#2c5fcf)', lbl: 'Mở ảnh', fn: () => { switchView('edit'); } },
+  { ico: '🔤', bg: 'linear-gradient(145deg,#4c9bff,#2c5fcf)', lbl: 'Mở ảnh & chèn chữ', fn: () => openChenChuDialog() },
+  { ico: '✂', bg: 'linear-gradient(145deg,#4c9bff,#2c5fcf)', lbl: 'Cắt / xoay ảnh', fn: () => homeOpenImageFirst(() => setTool('crop')) },
+  { ico: '✨', bg: 'linear-gradient(145deg,#8a5cf6,#5a2fd1)', lbl: 'AI xóa nền', fn: () => homeOpenImageFirst(aiRemoveBg) },
+  { ico: '🎯', bg: 'linear-gradient(145deg,#8a5cf6,#5a2fd1)', lbl: 'AI chọn chủ thể', fn: () => homeOpenImageFirst(aiSelectAll) },
+  { ico: '🎨', bg: 'linear-gradient(145deg,#ff8a5c,#e2552b)', lbl: 'Màu & ánh sáng', fn: () => homeOpenImageFirst(colorDialog) },
+  { ico: '👕', bg: 'linear-gradient(145deg,#ff8a5c,#e2552b)', lbl: 'Thay trang phục', fn: () => homeOpenImageFirst(outfitDialog) },
+  { ico: '🖌', bg: 'linear-gradient(145deg,#ff8a5c,#e2552b)', lbl: 'Đổi màu vùng chọn', fn: () => homeOpenImageFirst(recolorDialog) },
+  { ico: '🧵', bg: 'linear-gradient(145deg,#ff8a5c,#e2552b)', lbl: 'Phủ hoa văn', fn: () => homeOpenImageFirst(patternDialog) },
+  { ico: '👚', bg: 'linear-gradient(145deg,#ff8a5c,#e2552b)', lbl: 'Ghép đồ từ ảnh khác', fn: () => homeOpenImageFirst(garmentDialog) },
+  { ico: '🌈', bg: 'linear-gradient(145deg,#ff8a5c,#e2552b)', lbl: 'Hòa màu với nền', fn: () => homeOpenImageFirst(harmonizeDialog) },
+  { ico: '🩹', bg: 'linear-gradient(145deg,#ff8a5c,#e2552b)', lbl: 'Làm sạch viền đen', fn: () => homeOpenImageFirst(borderDialog) },
+
+  { sec: 'Xử lý hàng loạt' },
+  { ico: '🏷', bg: 'linear-gradient(145deg,#46c37b,#1f9456)', lbl: 'Đổi tên hàng loạt', fn: () => homeOpenBatch('rename') },
+  { ico: '📂', bg: 'linear-gradient(145deg,#46c37b,#1f9456)', lbl: 'Thư mục con', fn: () => homeOpenBatch('dirs') },
+  { ico: '🖼', bg: 'linear-gradient(145deg,#46c37b,#1f9456)', lbl: 'Xử lý ảnh hàng loạt', fn: () => homeOpenBatch('proc') },
+  { ico: '⬇', bg: 'linear-gradient(145deg,#46c37b,#1f9456)', lbl: 'Xuất hàng loạt', fn: () => homeOpenBatch('out') },
+
+  { sec: 'Prompt' },
+  { ico: '🗂', bg: 'linear-gradient(145deg,#ffb84c,#d88f1f)', lbl: 'Thư viện prompt', fn: () => switchView('prompt') },
+  { ico: '✨', bg: 'linear-gradient(145deg,#ffb84c,#d88f1f)', lbl: 'Cài đặt AI gợi ý prompt', fn: () => { switchView('prompt'); aicapSettingsDialog(); } },
+  { ico: '🌐', bg: 'linear-gradient(145deg,#ffb84c,#d88f1f)', lbl: 'Dịch prompt Việt ⇄ Anh', fn: () => switchView('dich') },
+
+  { sec: 'Công cụ khác' },
+  { ico: '📄', bg: 'linear-gradient(145deg,#4cd0e0,#1fa3b5)', lbl: 'Công cụ PDF & Ảnh', fn: () => switchView('pdf') },
+  { ico: '⚙', bg: 'linear-gradient(145deg,#8a97a6,#5c6675)', lbl: 'Cài đặt AI xóa nền', fn: () => aiSettingsDialog() },
+  { ico: '❓', bg: 'linear-gradient(145deg,#8a97a6,#5c6675)', lbl: 'Hướng dẫn nhanh', fn: () => helpDialog() },
+];
+let homeBuilt = false;
+function homeBuild() {
+  if (homeBuilt) return; homeBuilt = true;
+  const g = $('#homeGrid'); g.textContent = '';
+  HOME_ICONS.forEach(it => {
+    if (it.sec) { g.append(h('div', { class: 'homeSec' }, it.sec)); return; }
+    g.append(h('button', { class: 'homeTile', onclick: it.fn },
+      h('div', { class: 'homeIco', style: 'background:' + it.bg }, it.ico),
+      h('div', { class: 'homeLbl' }, it.lbl)));
+  });
+}
+
+/* ---------- Nút Back (Android / trình duyệt) ----------
+   Mỗi lần bấm Back: đóng hộp thoại đang mở → (điện thoại) đóng màn chi tiết prompt → về màn hình chính.
+   Ở màn hình chính bấm Back thêm lần nữa mới thoát phần mềm. */
+const NAV = { pushed: 0, pending: 0, timer: 0, ready: false };
+function navAtHome() { return $('#homeView').classList.contains('on'); }
+function navPromptDetail() { const v = $('#promptView'); return v.classList.contains('on') && v.classList.contains('detail') && matchMedia('(max-width:820px)').matches; }
+function navDesired() { return (navAtHome() ? 0 : 1) + (navPromptDetail() ? 1 : 0) + (curDlg ? 1 : 0); }
+function navSync() { if (!NAV.ready) return; clearTimeout(NAV.timer); NAV.timer = setTimeout(navApply, 0); }
+function navApply() {
+  if (NAV.pending) return;                                  // đang chờ trình duyệt lùi lịch sử xong
+  const want = navDesired();
+  try {
+    while (NAV.pushed < want) { history.pushState({ xa: NAV.pushed + 1 }, ''); NAV.pushed++; }
+    if (NAV.pushed > want) { NAV.pending = NAV.pushed - want; history.go(-NAV.pending); }
+  } catch (e) { /* trình duyệt chặn lịch sử: bỏ qua */ }
+}
+function navBack() {                                        // một lần bấm Back; trả về false nếu không còn gì để lùi (đang ở màn hình chính)
+  if (curDlg) { closeDialog(); return true; }
+  if (navPromptDetail()) { $('#promptView').classList.remove('detail'); return true; }
+  if (!navAtHome()) { switchView('home'); return true; }
+  return false;
+}
+function navInit() {
+  try { history.replaceState({ xa: 0 }, ''); } catch (e) { return; }
+  NAV.ready = true;
+  window.addEventListener('popstate', () => {
+    if (NAV.pending) { NAV.pushed = Math.max(0, NAV.pushed - NAV.pending); NAV.pending = 0; navSync(); return; }
+    const had = NAV.pushed; NAV.pushed = Math.max(0, NAV.pushed - 1);
+    if (!navBack() && had === 0) { try { history.back(); } catch (e) { } return; }   // mục lịch sử cũ còn sót (sau khi tải lại trang): lùi tiếp để thoát
+    navSync();
+  });
+  const mo = new MutationObserver(navSync);
+  mo.observe($('#homeView'), { attributes: true, attributeFilter: ['class'] });
+  mo.observe($('#promptView'), { attributes: true, attributeFilter: ['class'] });
+  mo.observe(modalRoot, { childList: true });
+  navSync();
 }
 
 /* ===================== CROP NHANH: THEO VÙNG CHỌN / NỀN THỪA / LỚP ===================== */
@@ -11058,7 +11428,7 @@ async function plBuild(entries, keepKey) {
   const worker = async () => { while (i < n) { const it = PL.items[i++]; await plLoadInfo(it); if (++done % 25 === 0) { plStatus(`Đang đọc prompt ${done}/${n}…`); await sleep(0); } } };
   await Promise.all([worker(), worker(), worker(), worker()]);
   PL.cur = (keepKey && PL.items.find(x => x.key === keepKey)) || null;
-  plStatus(''); plRender();
+  plStatus(''); plTools(); plRender();
   if (PL.cur) plDetail(PL.cur); else plClearDetail();
   const both = PL.items.filter(x => x.prompts.length && x.imgs.length).length;
   toast(`Đã nạp ${n} mục (${both} cặp đủ json + ảnh)`, 3500);
@@ -11102,7 +11472,8 @@ function plRender() {
       h('div', { class: 'ck' }, '✓'),
       h('div', { class: 'pic' }, it.imgs.length ? '' : '📝 chưa có ảnh'),
       h('div', { class: 'nm' }, it.base),
-      !it.prompts.length && h('span', { class: 'bd' }, 'Thiếu prompt'));
+      !it.prompts.length && h('span', { class: 'bd' }, 'Thiếu prompt'),
+      h('button', { class: 'xdel', title: 'Xóa mục này', onclick: e => { e.stopPropagation(); plDeleteConfirm([it]); } }, '✕'));
     t._it = it; grid.append(t); if (it.imgs.length && plObs) plObs.observe(t);
   }
   grid.style.setProperty('--tz', PL.zoom); PL.sel.forEach(x => { if (!PL.items.includes(x)) PL.sel.delete(x); }); plSelUpdate();
@@ -11131,19 +11502,27 @@ async function plDetail(it) {
   const files = [...it.prompts, ...it.imgs];
   box.append(h('div', { class: 'row', style: 'display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap' },
     h('button', { id: 'plBack', onclick: () => $('#promptView').classList.remove('detail') }, '← Danh sách'),
-    nameIn, h('button', { class: 'primary', onclick: () => plDoRename(it, nameIn.value), title: 'Đổi tên cả json và ảnh cùng lúc' }, '✎ Đổi tên cả cặp')));
+    nameIn, h('button', { class: 'primary', onclick: () => plDoRename(it, nameIn.value), title: 'Đổi tên cả json và ảnh cùng lúc' }, '✎ Đổi tên cả cặp'),
+    h('button', { class: 'danger', onclick: () => plDeleteConfirm([it]), title: 'Xóa cả ảnh và tệp prompt đi kèm của mục này' }, '🗑 Xóa mục này')));
   if (it.imgs.length) {
     PL.dz = 1; PL.dzBase = 0;
     const wrap = h('div', { class: 'plZoomWrap' }), img = h('img', { class: 'plImg', alt: it.base, draggable: false }), zb = h('button', { onclick: () => plDetailZoom(img, wrap, zb, PL.dz >= 4 ? 1 : PL.dz >= 2 ? 4 : 2), title: 'Bấm lần lượt: ×2 → ×4 → về cỡ vừa. Chuột trái trên ảnh = phóng to, chuột phải = thu nhỏ, 2 ngón = zoom' }, '🔍 Phóng to');
     wrap.append(img); plZoomGestures(img, wrap, zb);
     box.append(h('div', { class: 'plBox', style: 'text-align:center' }, wrap,
-      h('div', { style: 'margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap' }, h('button', { onclick: () => plOpenInEditor(it) }, '🖼 Mở trong Xưởng Ảnh'), zb),
+      h('div', { style: 'margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap' }, h('button', { onclick: () => plOpenInEditor(it) }, '🖼 Mở trong Xưởng Ảnh'), h('button', { onclick: () => plSendToText(it), title: 'Mở ảnh này ngay trong khung "Chèn chữ" của Công cụ PDF & Ảnh' }, '🔤 Chèn chữ'), zb),
       h('div', { class: 'small muted', style: 'margin-top:6px' }, 'Chuột trái: phóng to · Chuột phải: thu nhỏ · Kéo chuột để di chuyển · Điện thoại: chụm / mở 2 ngón')));
     try { const f = await plFile(it.imgs[0]); if (PL.cur === it) { PL.url = URL.createObjectURL(f); img.src = PL.url; img.onload = () => { const s = $('#plDim'); if (s) s.textContent = img.naturalWidth + '×' + img.naturalHeight + ' px · ' + Math.round(f.size / 1024) + ' KB'; }; } } catch (e) { img.replaceWith(h('div', { class: 'muted' }, 'Không đọc được ảnh: ' + e.message)); }
   } else box.append(h('div', { class: 'plBox muted' }, 'Chưa có ảnh nào cùng tên với tệp prompt này.'));
   box.append(h('div', { id: 'plDim', class: 'small muted', style: 'margin:-4px 0 8px;text-align:center' }));
   if (info.err) box.append(h('div', { class: 'plBox', style: 'border-color:#7a3a3a;color:#ffb0b0' }, info.err));
-  if (!it.prompts.length) box.append(h('div', { class: 'plBox muted' }, 'Chưa có tệp .json/.txt cùng tên với ảnh này.'));
+  if (!it.prompts.length) {
+    box.append(h('div', { class: 'plBox muted' }, 'Chưa có tệp .json/.txt cùng tên với ảnh này.'));
+    if (it.imgs.length) box.append(h('div', { class: 'plBox' },
+      h('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' },
+        h('button', { id: 'plAiBtn', class: 'primary', onclick: () => plAiSuggest(it) }, '✨ Gợi ý prompt bằng AI'),
+        h('button', { id: 'plAiOffBtn', onclick: () => plAiSuggestOffline(it) }, '🏷 Gợi ý từ khóa (AI offline)')),
+      h('div', { class: 'small muted', style: 'margin-top:6px' }, 'AI (Google Gemini) nhìn ảnh rồi gợi ý sẵn một prompt tiếng Anh kèm mô tả tiếng Việt – cần mạng và một khóa API miễn phí của anh, bấm “⚙ Cài đặt AI” ở thanh công cụ phía trên nếu chưa có. Nút bên cạnh dùng mô hình nhẹ chạy ngay trong máy, không cần mạng (sau khi tải một lần) và dùng được cho cả ảnh nhạy cảm, nhưng chỉ ra từ khóa chung, không phải câu mô tả đầy đủ.')));
+  }
   else if (!info.main && !info.err) box.append(h('div', { class: 'plBox muted' }, 'Không tìm thấy trường prompt trong tệp này – xem “Toàn bộ nội dung” bên dưới.'));
   if (info.main) box.append(plBox('Prompt', h('div', { class: 'plText' }, info.main), info.main, 'prompt'));
   if (info.main) box.append(plViBox(it, info));
@@ -11204,7 +11583,10 @@ function plZoomGestures(img, wrap, btn) {           // chuột trái = phóng to
   });
 }
 async function plOpenInEditor(it) {
-  try { const f = await plFile(it.imgs[0]); $('#tabs button[data-tab=edit]').click(); await openImageFiles([f]); } catch (e) { toast('Không mở được ảnh: ' + e.message, 4000); }
+  try { const f = await plFile(it.imgs[0]); switchView('edit'); await openImageFiles([f]); } catch (e) { toast('Không mở được ảnh: ' + e.message, 4000); }
+}
+async function plSendToText(it) {
+  try { const f = await plFile(it.imgs[0]); pdfSendFiles('p-text', [f]); } catch (e) { toast('Không mở được ảnh: ' + e.message, 4000); }
 }
 
 /* ---------- Đổi tên cả cặp ---------- */
@@ -11259,6 +11641,45 @@ async function plExportZip(sel) {
   plStatus('');
 }
 
+/* ---------- Xóa mục (ảnh + tệp prompt đi kèm) ---------- */
+async function plDeleteFileEntry(f) {
+  if (PL.mode !== 'dir' || !f.dirHandle) return;       // chế độ chọn tệp: không có quyền xóa tệp gốc trên máy, chỉ bỏ khỏi danh sách
+  try { await f.dirHandle.removeEntry(f.name); } catch (e) { if (e.name !== 'NotFoundError') throw e; }
+}
+async function plDeleteItems(items, onDisk) {
+  if (!items.length) return;
+  const fails = [];
+  if (onDisk) for (const it of items) {
+    for (const f of [...it.prompts, ...it.imgs]) { try { await plDeleteFileEntry(f); } catch (e) { fails.push(it.base + ' – ' + f.name + ': ' + e.message); } }
+  }
+  const removed = new Set(items.map(i => i.key));
+  PL.items = PL.items.filter(i => !removed.has(i.key));
+  items.forEach(i => PL.sel.delete(i));
+  if (PL.cur && removed.has(PL.cur.key)) { PL.cur = null; plClearDetail(); }
+  plTools(); plRender();
+  const note = !onDisk ? ' khỏi danh sách (vẫn còn nguyên tệp trên máy)' : fails.length ? '' : ' khỏi thư mục trên máy';
+  toast(`Đã xóa ${items.length} mục${note}${fails.length ? ` – ${fails.length} tệp lỗi` : ''}`, 4500);
+  if (fails.length && typeof bLog === 'function') bLog(fails.join('\n'));
+}
+function plDeleteConfirm(items) {
+  if (!items.length) return;
+  const n = items.length;
+  if (PL.mode !== 'dir') {                              // chế độ chọn tệp: không có quyền xóa tệp gốc, chỉ hỏi 1 câu rồi bỏ khỏi danh sách
+    if (confirm(`Bỏ ${n} mục khỏi danh sách đang xem? (Chế độ chọn tệp không xóa được tệp gốc trên máy.)`)) plDeleteItems(items, false);
+    return;
+  }
+  dialog({
+    title: `Xóa ${n} mục`,
+    body: h('div', null, h('p', null, `Mục gồm ảnh + tệp prompt (.json/.txt) đi kèm. Chọn cách xóa:`),
+      h('p', { class: 'small muted' }, '“Xóa cả tệp trên máy” sẽ xóa thật trong thư mục, không khôi phục lại được. “Chỉ bỏ khỏi danh sách” chỉ ẩn khỏi phần mềm, tệp trên máy vẫn còn nguyên.')),
+    buttons: [
+      { text: '📋 Chỉ bỏ khỏi danh sách (giữ nguyên tệp)', cls: 'primary', fn: () => plDeleteItems(items, false) },
+      { text: '🗑 Xóa cả tệp trên máy', cls: 'danger', fn: () => plDeleteItems(items, true) },
+      { text: 'Hủy' },
+    ],
+  });
+}
+
 /* ---------- Chọn nhiều + cỡ ô ảnh ---------- */
 function plGridZoom() {                              // ×1 → ×2 → ×4 → ×1
   PL.zoom = PL.zoom === 1 ? 2 : PL.zoom === 2 ? 4 : 1;
@@ -11298,6 +11719,7 @@ function plSelUpdate() {
     h('button', { disabled: !has, onclick: plSelOpen }, '🖼 Mở trong Xưởng Ảnh'),
     h('button', { disabled: !has, onclick: plSelCopy }, '📋 Sao chép prompt'),
     h('button', { disabled: !has, onclick: plBatchRenameDialog }, '✎ Đổi tên hàng loạt'),
+    h('button', { class: 'danger', disabled: !has, onclick: () => plDeleteConfirm(plSelItems()) }, '🗑 Xóa đã chọn'),
     h('button', { onclick: () => plToggleMulti(false) }, '✕ Thoát'));
 }
 function plSelZip() { plExportZip(plSelItems()); }
@@ -11391,6 +11813,10 @@ function plTools() {
     h('button', { id: 'plMulti', class: PL.multi ? 'on' : '', onclick: () => plToggleMulti(), title: 'Chọn nhiều ảnh cùng lúc (hoặc giữ Ctrl / Shift khi bấm; trên điện thoại: nhấn giữ một ảnh)' }, '☑ Chọn nhiều'),
     h('button', { id: 'plTz', class: PL.zoom > 1 ? 'on' : '', onclick: plGridZoom, title: 'Cỡ ô ảnh: bấm lần lượt ×2 → ×4 → về ×1' }, '🔍 Ô ảnh ×' + PL.zoom),
     h('button', { id: 'plViAll', onclick: plViDialog, title: 'Dịch prompt tiếng Anh sang tiếng Việt (đã chọn / đang hiện / toàn bộ)' }, '🌐 Dịch sang Việt'),
+    PL.items.some(it => it.imgs.length && !it.prompts.length) ? h('button', { onclick: plAiBatch, title: 'Dùng AI (Google Gemini, cần mạng + khóa API) nhìn từng ảnh thiếu prompt để gợi ý sẵn' }, '✨ Gợi ý AI cho ảnh thiếu prompt') : null,
+    PL.items.some(it => it.imgs.length && !it.prompts.length) ? h('button', { onclick: plAiBatchOffline, title: 'Dùng AI offline (chạy trong máy, không cần mạng, dùng được cho ảnh nhạy cảm) gắn từ khóa cho từng ảnh thiếu prompt' }, '🏷 Gợi ý từ khóa offline cho ảnh thiếu prompt') : null,
+    h('button', { onclick: () => aicapSettingsDialog(), title: 'Cài đặt AI gợi ý prompt (online – Google Gemini, và offline – gắn thẻ từ khóa)' }, '⚙ Cài đặt AI'),
+    h('span', { id: 'plAiStat', class: 'small', style: 'color:var(--accent)' }),
     h('button', { id: 'plTidy', onclick: plTidyDialog, style: 'display:none', title: 'Đổi hàng loạt abc.info.json → abc.json' }, '🧹 Bỏ “.info” trong tên'),
     h('button', { id: 'plZip', onclick: plExportZip, style: 'display:none', title: 'Gói các cặp đang hiển thị (đã đổi tên) thành ZIP' }, '⬇ Xuất ZIP'),
     h('span', { id: 'plCount', class: 'small muted' }), h('span', { id: 'plStat', class: 'small', style: 'color:var(--accent)' })].filter(Boolean));
@@ -11613,6 +12039,287 @@ function viExportText(list) {
   return out.join('\n\n');
 }
 
+/* ===================== Gợi ý prompt bằng AI nhìn ảnh (Google Gemini, cần mạng + khóa API của anh) ===================== */
+const AICAP = { model: 'gemini-2.5-flash', busy: false, cancel: false };
+try { const m = localStorage.getItem('xla_gemini_model'); if (m) AICAP.model = m; } catch (e) { /* bỏ qua */ }
+const aicapKey = () => { try { return localStorage.getItem('xla_gemini_key') || ''; } catch (e) { return ''; } };
+const aicapSetKey = k => { try { if (k) localStorage.setItem('xla_gemini_key', k); else localStorage.removeItem('xla_gemini_key'); } catch (e) { /* bỏ qua */ } };
+const aicapSetModel = m => { AICAP.model = m || 'gemini-2.5-flash'; try { localStorage.setItem('xla_gemini_model', AICAP.model); } catch (e) { /* bỏ qua */ } };
+
+function aicapSettingsDialog(after) {
+  const kIn = h('input', { type: 'text', value: aicapKey(), placeholder: 'Dán khóa API vào đây (dạng AIza…)', style: 'width:100%;font-family:monospace' });
+  const mIn = h('input', { type: 'text', value: AICAP.model, style: 'width:100%' });
+  const offStat = h('div', { class: 'small', style: 'margin:6px 0 4px' }), offProg = h('div', { class: 'small muted' });
+  const offRefresh = async () => {
+    const r = await aitagStatus();
+    offStat.textContent = r ? `✔ Đã có mô hình gắn thẻ: ${r.name} (${C.fmtBytes(r.size)}) – chạy offline.` : '✖ Chưa có mô hình gắn thẻ offline trong trình duyệt này.';
+    offStat.style.color = r ? '#5fd38a' : '#ffb347';
+  };
+  dialog({
+    title: 'Cài đặt AI gợi ý prompt', wide: true,
+    body: h('div', null,
+      h('fieldset', null, h('legend', null, '🌐 AI online – Google Gemini (đúng hơn, cần mạng + khóa, không dùng được cho ảnh nhạy cảm)'),
+        h('div', { class: 'small', style: 'margin-bottom:10px' },
+          '1. Vào trang ', h('a', { href: 'https://aistudio.google.com/apikey', target: '_blank', rel: 'noopener' }, 'aistudio.google.com/apikey'), ' (đăng nhập bằng tài khoản Google).', h('br'),
+          '2. Bấm “Create API key” để lấy một khóa miễn phí.', h('br'),
+          '3. Dán khóa đó vào ô bên dưới rồi bấm “Lưu”. Khóa chỉ lưu trong máy anh, không gửi cho ai khác ngoài Google khi hỏi AI.'),
+        h('fieldset', null, h('legend', null, 'Khóa API'), kIn),
+        h('fieldset', null, h('legend', null, 'Tên mô hình (để nguyên nếu không rõ)'), mIn,
+          h('div', { class: 'small muted', style: 'margin-top:4px' }, 'Nếu báo lỗi "không tìm thấy mô hình", thử đổi thành gemini-1.5-flash.')),
+        h('div', { class: 'small muted' }, 'Mỗi lần hỏi AI tốn một lượt trong hạn mức miễn phí hằng ngày của tài khoản Google của anh.')),
+      h('fieldset', { style: 'margin-top:14px' }, h('legend', null, '📦 AI offline – gắn thẻ từ khóa (nhẹ, không cần mạng sau khi tải, dùng được cho ảnh nhạy cảm)'),
+        h('p', { class: 'small' }, 'Mô hình nhỏ (~3.7 MB) đoán ảnh thuộc loại gì trong 1000 nhãn chung (loài vật, đồ vật, cảnh…), chạy ngay trong máy, ảnh không gửi đi đâu. Chỉ ra được từ khóa, không ra được câu mô tả đầy đủ như AI online.'),
+        offStat,
+        h('div', { class: 'btnrow' },
+          h('button', { class: 'primary', onclick: async () => {
+            offProg.textContent = 'Đang tải…';
+            try { await aiLoadOrt(t => { offProg.textContent = t; }); await aiCacheOrt(AI.base || AI.ORT_SOURCES[0], t => { offProg.textContent = t; }); await aitagLoadLabels(t => { offProg.textContent = t; }); const sz = await aitagDownload((g, t) => { offProg.textContent = `Đang tải mô hình gắn thẻ… ${C.fmtBytes(g)}${t ? ' / ' + C.fmtBytes(t) : ''}`; }); offProg.textContent = 'Tải xong ' + C.fmtBytes(sz); }
+            catch (e) { offProg.textContent = 'Lỗi: ' + e.message + ' – có thể mạng bị chặn; dùng nút “Chọn tệp .onnx” bên cạnh.'; }
+            offRefresh();
+          } }, '⬇ Tải mô hình gắn thẻ (≈4 MB)'),
+          h('button', { onclick: async () => { await aitagPickFile(); offRefresh(); } }, '📂 Chọn tệp .onnx từ máy'),
+          h('button', { class: 'danger', onclick: async () => { await aitagDel(); offRefresh(); } }, 'Xóa mô hình đã lưu')),
+        offProg)),
+    buttons: [
+      { text: '💾 Lưu', cls: 'primary', fn: () => { aicapSetKey(kIn.value.trim()); aicapSetModel(mIn.value.trim()); toast('Đã lưu cài đặt AI'); if (after) after(kIn.value.trim()); } },
+      { text: 'Đóng' },
+    ],
+  });
+  offRefresh();
+}
+function aicapEnsureKey() {
+  return new Promise(res => {
+    const k = aicapKey(); if (k) { res(k); return; }
+    aicapSettingsDialog(k2 => res(k2 || ''));
+  });
+}
+
+/* ---------- gọi Gemini ---------- */
+async function aicapDownscale(file, maxDim) {
+  let bm; try { bm = await createImageBitmap(file); } catch (e) { throw new Error('Không đọc được ảnh: ' + e.message); }
+  const k = Math.min(1, maxDim / Math.max(bm.width, bm.height));
+  const cv = mkCanvas(Math.max(1, Math.round(bm.width * k)), Math.max(1, Math.round(bm.height * k)));
+  ctx2(cv).drawImage(bm, 0, 0, cv.width, cv.height); if (bm.close) bm.close();
+  const blob = await toBlob(cv, 'image/jpeg', 0.85);
+  const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = () => rej(r.error); r.readAsDataURL(blob); });
+  return b64;
+}
+const AICAP_PROMPT = 'Bạn là trợ lý mô tả ảnh để làm prompt tạo ảnh AI (Stable Diffusion/Midjourney). Nhìn kỹ bức ảnh rồi trả lời DUY NHẤT một JSON hợp lệ, không thêm chữ nào khác, đúng dạng: {"en":"<mô tả chi tiết bằng tiếng Anh, dạng cụm từ cách nhau bởi dấu phẩy, đủ để vẽ lại được bức ảnh: chủ thể, hành động/dáng, trang phục, bối cảnh, ánh sáng, màu sắc, góc máy, phong cách>","vi":"<mô tả lại nội dung bức ảnh bằng tiếng Việt tự nhiên, 1-3 câu, để người không biết tiếng Anh vẫn hiểu ảnh vẽ gì>"}';
+async function aicapCall(file) {
+  const key = aicapKey(); if (!key) throw new Error('Chưa có khóa API');
+  const b64 = await aicapDownscale(file, 1024);
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(AICAP.model)}:generateContent?key=${encodeURIComponent(key)}`;
+  const body = { contents: [{ parts: [{ text: AICAP_PROMPT }, { inline_data: { mime_type: 'image/jpeg', data: b64 } }] }], generationConfig: { response_mime_type: 'application/json', temperature: 0.4 } };
+  let r; try { r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }); }
+  catch (e) { throw new Error('Không gọi được mạng – kiểm tra kết nối Internet'); }
+  if (!r.ok) {
+    let msg = 'HTTP ' + r.status;
+    try { const j = await r.json(); msg = (j.error && j.error.message) || msg; } catch (e) { /* bỏ qua */ }
+    if (r.status === 400 || r.status === 403) throw new Error('Khóa API không hợp lệ hoặc bị từ chối: ' + msg);
+    if (r.status === 404) throw new Error('Không tìm thấy mô hình “' + AICAP.model + '” – vào Cài đặt AI đổi tên mô hình (thử gemini-1.5-flash)');
+    if (r.status === 429) throw new Error('Đã hết hạn mức miễn phí hôm nay (429) – thử lại sau hoặc dùng tài khoản khác');
+    throw new Error(msg);
+  }
+  const j = await r.json();
+  const cand = (j.candidates || [])[0];
+  if (!cand) throw new Error('AI không trả về kết quả (có thể bị chặn nội dung) – ' + (j.promptFeedback ? JSON.stringify(j.promptFeedback) : ''));
+  const txt = ((cand.content || {}).parts || []).map(p => p.text || '').join('');
+  let out; try { out = JSON.parse(txt); } catch (e) { const m = /\{[\s\S]*\}/.exec(txt); if (m) { try { out = JSON.parse(m[0]); } catch (e2) { /* bỏ qua */ } } }
+  if (!out || !out.en) throw new Error('AI trả lời không đúng định dạng – thử lại');
+  return { en: String(out.en).trim(), vi: String(out.vi || '').trim() };
+}
+
+/* ---------- lưu kết quả thành tệp prompt mới cho một mục trong Thư viện prompt ---------- */
+async function plCapSave(it, en) {
+  const name = C.sanitizeName(it.base) + '.json', content = JSON.stringify({ prompt: en }, null, 2);
+  if (PL.mode === 'dir' && it.imgs.length) {
+    const dh = it.imgs[0].dirHandle;
+    try { await dh.getFileHandle(name); throw new Error('Đã có tệp “' + name + '” trong thư mục này'); } catch (e) { if (e.message.startsWith('Đã có tệp')) throw e; }
+    const fh = await dh.getFileHandle(name, { create: true }), w = await fh.createWritable(); await w.write(content); await w.close();
+    it.prompts.push({ name, dir: it.dir, dirHandle: dh, handle: fh, suffix: '.json' });
+  } else {
+    it.prompts.push({ name, dir: it.dir, file: new File([content], name, { type: 'application/json' }), suffix: '.json' });
+  }
+  await plLoadInfo(it);
+}
+
+/* ---------- hộp thoại kết quả cho 1 ảnh ---------- */
+function plAiResultDialog(it, res) {
+  const enTa = h('textarea', { style: 'width:100%;height:110px;font:13px/1.4 Consolas,monospace' }, res.en);
+  const viTa = h('textarea', { style: 'width:100%;height:80px' }, res.vi);
+  dialog({
+    title: 'AI gợi ý prompt cho “' + it.base + '”', wide: true,
+    body: h('div', null,
+      h('div', { class: 'small muted', style: 'margin-bottom:8px' }, 'AI chỉ đoán theo hình, anh nên đọc lại và sửa trước khi lưu hoặc dùng để tạo ảnh.'),
+      h('fieldset', null, h('legend', null, 'Prompt tiếng Anh (dùng để tạo ảnh)'), enTa),
+      h('fieldset', null, h('legend', null, 'Mô tả tiếng Việt (để tham khảo)'), viTa)),
+    buttons: [
+      { text: '📋 Sao chép Anh', fn: () => { plCopy(enTa.value, 'prompt tiếng Anh'); return false; } },
+      { text: '📋 Sao chép Việt', fn: () => { plCopy(viTa.value, 'mô tả tiếng Việt'); return false; } },
+      { text: '🌐 Đưa sang Dịch prompt', fn: () => { dichSend(enTa.value, { english: true }); return false; } },
+      { text: '💾 Lưu làm prompt cho ảnh này', cls: 'primary', fn: async () => { try { await plCapSave(it, enTa.value.trim()); plTools(); plRender(); await plDetail(it); toast('Đã lưu prompt cho “' + it.base + '”'); } catch (e) { toast('Không lưu được: ' + e.message, 6000); return false; } } },
+      { text: 'Đóng' },
+    ],
+  });
+}
+
+/* ---------- gợi ý cho 1 ảnh (nút trong chi tiết) ---------- */
+async function plAiSuggest(it) {
+  if (!it.imgs.length) { toast('Mục này chưa có ảnh'); return; }
+  const key = await aicapEnsureKey(); if (!key) return;
+  const btn = $('#plAiBtn'); if (btn) { btn.disabled = true; btn.textContent = '⏳ Đang hỏi AI…'; }
+  try { const file = await plFile(it.imgs[0]); const res = await aicapCall(file); plAiResultDialog(it, res); }
+  catch (e) { toast('Lỗi AI: ' + e.message, 6000); }
+  if (btn) { btn.disabled = false; btn.textContent = '✨ Gợi ý prompt bằng AI'; }
+}
+
+/* ---------- gợi ý hàng loạt cho mọi ảnh đang thiếu prompt ---------- */
+async function plAiBatch() {
+  const items = PL.items.filter(it => it.imgs.length && !it.prompts.length);
+  if (!items.length) { toast('Không có ảnh nào thiếu prompt'); return; }
+  const key = await aicapEnsureKey(); if (!key) return;
+  if (!confirm(`Hỏi AI để gợi ý prompt cho ${items.length} ảnh đang thiếu? Mỗi ảnh tốn một lượt trong hạn mức miễn phí hằng ngày, kết quả sẽ tự lưu thành tệp prompt mới cạnh ảnh.`)) return;
+  AICAP.cancel = false; AICAP.busy = true;
+  const stat = $('#plAiStat'); const say = s => { if (stat) stat.textContent = s; };
+  let ok = 0, fail = 0; const log = [];
+  for (let i = 0; i < items.length && !AICAP.cancel; i++) {
+    const it = items[i]; say(`Đang hỏi AI ${i + 1}/${items.length}…`);
+    try { const file = await plFile(it.imgs[0]); const res = await aicapCall(file); await plCapSave(it, res.en); ok++; }
+    catch (e) { fail++; log.push(`✖ ${it.base}: ${e.message}`); }
+    await sleep(300);   // chừa quãng nghỉ nhỏ để đỡ dồn dập lên hạn mức miễn phí
+  }
+  AICAP.busy = false; say('');
+  plTools(); plRender(); if (PL.cur) await plDetail(PL.cur);
+  toast(`Đã gợi ý xong ${ok} ảnh${fail ? `, ${fail} lỗi` : ''}${AICAP.cancel ? ' (đã dừng giữa chừng)' : ''}`, 6000);
+  if (log.length) bLog ? bLog(log.join('\n')) : console.warn(log.join('\n'));
+}
+
+/* ===================== AI gắn thẻ ảnh (offline) – gợi ý từ khóa prompt khi không có mạng hoặc ảnh nhạy cảm ===================== */
+/* Mô hình nhỏ (MobileNetV2, ~3.7MB) phân loại ảnh theo 1000 nhãn ImageNet, chạy ngay trong trình duyệt bằng thư viện onnxruntime-web dùng chung với AI xóa nền. Không gửi ảnh đi đâu. */
+const AITAG = {
+  MODEL_URL: 'https://huggingface.co/onnxmodelzoo/legacy_models/resolve/main/validated/vision/classification/mobilenet/model/mobilenetv2-12-int8.onnx',
+  LABELS_URLS: ['https://cdn.jsdelivr.net/gh/pytorch/hub@master/imagenet_classes.txt', 'https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt'],
+  session: null, labels: null, info: null
+};
+async function aitagStatus() { try { const r = await aiGet('tagmodel'); AITAG.info = r ? { name: r.name, size: r.blob.size } : null; } catch (e) { AITAG.info = null; } return AITAG.info; }
+async function aitagLabelsCached() { try { const r = await aiGet('taglabels'); return !!(r && Array.isArray(r.list) && r.list.length === 1000); } catch (e) { return false; } }
+async function aitagDownload(onProg) {
+  const r = await fetch(AITAG.MODEL_URL);
+  if (!r.ok) throw new Error('Máy chủ trả lỗi ' + r.status);
+  const total = +r.headers.get('content-length') || 0, rd = r.body && r.body.getReader ? r.body.getReader() : null, parts = []; let got = 0;
+  if (!rd) { const b = await r.blob(); parts.push(b); got = b.size; }
+  else for (;;) { const { done, value } = await rd.read(); if (done) break; parts.push(value); got += value.length; if (onProg) onProg(got, total); }
+  const blob = new Blob(parts);
+  if (blob.size < 1e5) throw new Error('Tệp tải về quá nhỏ, có thể bị chặn');
+  await aiPut({ blob, name: 'MobileNetV2 (gắn thẻ ảnh offline)' }, 'tagmodel');
+  AITAG.session = null;
+  return blob.size;
+}
+function aitagPickFile() {
+  return new Promise((res) => {
+    const i = h('input', { type: 'file', accept: '.onnx', style: 'display:none' });
+    i.onchange = async () => { const f = i.files[0]; i.remove(); if (!f) return res(null); await aiPut({ blob: f, name: f.name }, 'tagmodel'); AITAG.session = null; res(f); };
+    document.body.append(i); i.click();
+  });
+}
+async function aitagDel() { try { const db = await aiDb(); await new Promise((res, rej) => { const t = db.transaction('models', 'readwrite'); t.objectStore('models').delete('tagmodel'); t.oncomplete = res; t.onerror = () => rej(t.error); }); } catch (e) { /* bỏ qua */ } AITAG.session = null; }
+async function aitagLoadLabels(say) {
+  if (AITAG.labels) return AITAG.labels;
+  try { const r = await aiGet('taglabels'); if (r && Array.isArray(r.list) && r.list.length === 1000) { AITAG.labels = r.list; return AITAG.labels; } } catch (e) { /* bỏ qua */ }
+  say && say('Đang tải danh sách 1000 nhãn (lần đầu cần mạng)…');
+  let txt = '', lastErr;
+  for (const u of AITAG.LABELS_URLS) { try { const r = await fetch(u); if (!r.ok) throw new Error('HTTP ' + r.status); txt = await r.text(); if (txt.trim()) break; } catch (e) { lastErr = e; } }
+  if (!txt.trim()) throw new Error('Không tải được danh sách nhãn (cần mạng lần đầu): ' + (lastErr ? lastErr.message : ''));
+  const list = txt.split('\n').map(s => s.trim()).filter(Boolean);
+  if (list.length !== 1000) throw new Error('Danh sách nhãn tải về không đủ 1000 dòng (được ' + list.length + ') – thử lại');
+  try { await aiPut({ list }, 'taglabels'); } catch (e) { /* bỏ qua */ }
+  AITAG.labels = list; return list;
+}
+async function aitagSession(say) {
+  say = say || aiStage;
+  const rec = await aiGet('tagmodel'); if (!rec) return null;
+  if (AITAG.session) return AITAG.session;
+  const ort = await aiLoadOrt(say);
+  say('Đang đọc mô hình gắn thẻ (bước 2/3)…'); await yieldUI();
+  const buf = new Uint8Array(await rec.blob.arrayBuffer());
+  say('Đang khởi tạo mô hình gắn thẻ (bước 3/3)…'); await yieldUI();
+  AITAG.session = await ort.InferenceSession.create(buf, { executionProviders: ['wasm'], graphOptimizationLevel: 'basic' });
+  return AITAG.session;
+}
+async function aitagEnsure() {
+  const r = await aitagStatus();
+  if (!r) { toast('Chưa có mô hình gắn thẻ offline – hãy tải một lần ở hộp “⚙ Cài đặt AI”', 4500); aicapSettingsDialog(); return false; }
+  return true;
+}
+/* ---------- chạy mô hình trên 1 ảnh → danh sách nhãn (tiếng Anh) kèm độ chắc chắn ---------- */
+async function aitagInfer(file, topN, minProb) {
+  topN = topN || 10; minProb = minProb == null ? 0.015 : minProb;
+  const sess = await aitagSession(); if (!sess) throw new Error('Chưa có mô hình gắn thẻ offline');
+  const labels = await aitagLoadLabels();
+  let bm; try { bm = await createImageBitmap(file); } catch (e) { throw new Error('Không đọc được ảnh: ' + e.message); }
+  const n = 224, cv = mkCanvas(n, n), cx = ctx2(cv);
+  const s = Math.min(bm.width, bm.height), sx = (bm.width - s) / 2, sy = (bm.height - s) / 2;    // cắt vuông ở giữa rồi co về 224×224, đúng kiểu tiền xử lý ImageNet chuẩn
+  cx.drawImage(bm, sx, sy, s, s, 0, 0, n, n); if (bm.close) bm.close();
+  const { data } = cx.getImageData(0, 0, n, n);
+  const mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225], f32 = new Float32Array(3 * n * n);
+  for (let i = 0; i < n * n; i++) for (let c = 0; c < 3; c++) f32[c * n * n + i] = (data[i * 4 + c] / 255 - mean[c]) / std[c];
+  const ort = AI.ort || window.ort, tensor = new ort.Tensor('float32', f32, [1, 3, n, n]);
+  const out = await sess.run({ [sess.inputNames[0]]: tensor });
+  const logits = out[sess.outputNames[0]].data;
+  let mx = -Infinity; for (let i = 0; i < logits.length; i++) if (logits[i] > mx) mx = logits[i];
+  let sum = 0; const probs = new Float32Array(logits.length);
+  for (let i = 0; i < logits.length; i++) { probs[i] = Math.exp(logits[i] - mx); sum += probs[i]; }
+  for (let i = 0; i < logits.length; i++) probs[i] /= sum;
+  const idx = [...probs.keys()].sort((a, b) => probs[b] - probs[a]);
+  const res = [];
+  for (const i of idx) { if (res.length >= topN) break; if (probs[i] < minProb && res.length >= 3) break; res.push({ en: (labels[i] || ('lớp #' + i)).replace(/,/g, ';'), prob: probs[i] }); }
+  return res;
+}
+/* ---------- hộp thoại kết quả cho 1 ảnh (tag offline) ---------- */
+function plAiOfflineResultDialog(it, tags) {
+  const enList = tags.map(t => t.en), enJoin = enList.join(', ');
+  const enTa = h('textarea', { style: 'width:100%;height:90px;font:13px/1.4 Consolas,monospace' }, enJoin);
+  const rows = tags.map(t => { const vi = viOffline(t.en); return h('tr', null, h('td', null, t.en), h('td', { class: 'small muted' }, vi && vi.toLowerCase() !== t.en.toLowerCase() ? vi : '—'), h('td', { class: 'small muted' }, Math.round(t.prob * 100) + '%')); });
+  dialog({
+    title: 'AI (offline) gợi ý từ khóa cho “' + it.base + '”', wide: true,
+    body: h('div', null,
+      h('div', { class: 'small muted', style: 'margin-bottom:8px' }, 'Mô hình nhẹ chạy ngay trong máy, chỉ đoán theo 1000 nhãn chung (loài vật, đồ vật, cảnh…), không phải câu mô tả đầy đủ. Từ điển có sẵn không phủ hết các từ chuyên biệt nên phần tiếng Việt có thể để trống (ô “—”) – anh xem rồi sửa trước khi lưu.'),
+      h('fieldset', null, h('legend', null, 'Danh sách từ khóa'), h('table', { class: 'small', style: 'width:100%' }, h('thead', null, h('tr', null, h('th', null, 'Tiếng Anh'), h('th', null, 'Tiếng Việt (nếu có)'), h('th', null, 'Độ chắc'))), h('tbody', null, rows))),
+      h('fieldset', null, h('legend', null, 'Prompt tiếng Anh (sửa được rồi lưu)'), enTa)),
+    buttons: [
+      { text: '📋 Sao chép', fn: () => { plCopy(enTa.value, 'danh sách từ khóa'); return false; } },
+      { text: '🌐 Đưa sang Dịch prompt', fn: () => { dichSend(enTa.value, { english: true }); return false; } },
+      { text: '💾 Lưu làm prompt cho ảnh này', cls: 'primary', fn: async () => { try { await plCapSave(it, enTa.value.trim()); plTools(); plRender(); await plDetail(it); toast('Đã lưu prompt cho “' + it.base + '”'); } catch (e) { toast('Không lưu được: ' + e.message, 6000); return false; } } },
+      { text: 'Đóng' },
+    ],
+  });
+}
+async function plAiSuggestOffline(it) {
+  if (!it.imgs.length) { toast('Mục này chưa có ảnh'); return; }
+  if (!(await aitagEnsure())) return;
+  const btn = $('#plAiOffBtn'); if (btn) { btn.disabled = true; btn.textContent = '⏳ Đang phân loại…'; }
+  try { const file = await plFile(it.imgs[0]); const tags = await aitagInfer(file); plAiOfflineResultDialog(it, tags); }
+  catch (e) { toast('Lỗi AI offline: ' + e.message, 6000); }
+  if (btn) { btn.disabled = false; btn.textContent = '🏷 Gợi ý từ khóa (AI offline)'; }
+}
+async function plAiBatchOffline() {
+  const items = PL.items.filter(it => it.imgs.length && !it.prompts.length);
+  if (!items.length) { toast('Không có ảnh nào thiếu prompt'); return; }
+  if (!(await aitagEnsure())) return;
+  if (!confirm(`Dùng AI offline gợi ý từ khóa cho ${items.length} ảnh đang thiếu? Không cần mạng (sau khi đã tải mô hình), kết quả sẽ tự lưu thành tệp prompt mới cạnh ảnh.`)) return;
+  const stat = $('#plAiStat'); const say = s => { if (stat) stat.textContent = s; };
+  let ok = 0, fail = 0; const log = [];
+  for (let i = 0; i < items.length; i++) {
+    const it = items[i]; say(`Đang gắn thẻ ${i + 1}/${items.length}…`);
+    try { const file = await plFile(it.imgs[0]); const tags = await aitagInfer(file); await plCapSave(it, tags.map(t => t.en).join(', ')); ok++; }
+    catch (e) { fail++; log.push(`✖ ${it.base}: ${e.message}`); }
+    await yieldUI();
+  }
+  say(''); plTools(); plRender(); if (PL.cur) await plDetail(PL.cur);
+  toast(`Đã gợi ý xong ${ok} ảnh${fail ? `, ${fail} lỗi` : ''}`, 6000);
+  if (log.length) bLog(log.join('\n'));
+}
+
 /* ===================== CÔNG CỤ PDF & ẢNH (bản V7 nhúng nguyên vẹn trong khung riêng) + cầu nối với Xưởng Ảnh ===================== */
 const PDFT = { win: null, ready: null };
 const PDF_PRE = '<script>(function(){var g=document.getElementById.bind(document);document.getElementById=function(id){var e=g(id);if(e||!/^(lib|bin|font)-/.test(id))return e;try{return parent.document.getElementById(id)}catch(_){return null}}})();' + '<' + '/script>';
@@ -11638,7 +12345,17 @@ function pdfToolReady() {
   PDFT.ready.catch(() => { PDFT.ready = null; });
   return PDFT.ready;
 }
-function showTab(name) { const b = $(`#tabs button[data-tab=${name}]`); if (b) b.click(); }
+function showTab(name) { switchView(name); }
+function openChenChuDialog() { $('#fileChenChu').click(); }
+async function pdfSendCurrentToText() {              // gộp ảnh đang mở rồi chuyển thẳng sang khung "Chèn chữ" của Công cụ PDF
+  if (!D) { toast('Chưa mở ảnh nào'); return; }
+  const files = await editorImages(false);
+  if (files.length) pdfSendFiles('p-text', files);
+}
+$('#fileChenChu').onchange = e => {
+  const files = [...e.target.files]; e.target.value = '';
+  if (files.length) pdfSendFiles('p-text', files);
+};
 function pdfHook(w) {                                // thêm nút "Mở trong Xưởng Ảnh" vào khung kết quả của công cụ PDF
   const orig = w.showResults;
   w.showResults = function (box, items, opts) {
@@ -11950,6 +12667,57 @@ function exportDirCsv() {
   const rows = [['Tên cũ', 'Tên mới', 'Số tệp', 'Thư mục con']].concat(dirsSel().map(d => [d.name, d.newName, d.nFiles ?? '', d.nDirs ?? '']));
   downloadBlob(new Blob(['﻿' + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' }), 'doi_chieu_thu_muc.csv');
 }
+function dirRenameOps() {   // thứ tự lệnh đổi tên an toàn (chèn tên tạm khi đổi chéo/đổi hoa-thường), dùng chung cho đổi trực tiếp và xuất .bat
+  let pend = dirsSel().filter(d => d.newName !== d.name).map(d => ({ cur: d.name, to: d.newName }));
+  const cur = new Set(pend.map(d => d.cur.toLowerCase())), ops = [];
+  let guard = 0;
+  while (pend.length && guard++ < 100000) {
+    const free = pend.filter(d => !cur.has(d.to.toLowerCase()));
+    if (free.length) {
+      free.forEach(d => { ops.push([d.cur, d.to]); cur.delete(d.cur.toLowerCase()); cur.add(d.to.toLowerCase()); });
+      pend = pend.filter(d => !free.includes(d));
+    } else {
+      const d = pend[0], via = `__xla_tmp_${guard}`;
+      ops.push([d.cur, via]); cur.delete(d.cur.toLowerCase()); cur.add(via.toLowerCase()); d.cur = via;
+    }
+  }
+  return ops;
+}
+function buildDirBatText() {   // nội dung tệp .bat chạy "ren" trực tiếp trên Windows – không sao chép, giữ nguyên ngày giờ, nhanh với thư mục lớn
+  const todo = dirsSel().filter(d => d.newName !== d.name);
+  const esc = s => '"' + String(s).replace(/%/g, '%%').replace(/"/g, "'") + '"';
+  const ops = dirRenameOps();
+  const lines = [
+    '@echo off',
+    'chcp 65001>nul',
+    'setlocal enabledelayedexpansion',
+    'cd /d "%~dp0"',
+    'echo Dat tep .bat nay vao dung thu muc cha chua cac thu muc con can doi ten, roi bam vao day.',
+    'echo.',
+  ];
+  ops.forEach(([from, to]) => lines.push(`if exist ${esc(from)} ( ren ${esc(from)} ${esc(to)} ) else ( echo [BO QUA] khong thay ${esc(from)} )`));
+  lines.push('echo.', `echo Da doi ten xong ${todo.length} thu muc.`, 'pause');
+  return { text: lines.join('\r\n') + '\r\n', n: todo.length };
+}
+function exportDirBat() {
+  const todo = dirsSel().filter(d => d.newName !== d.name);
+  if (!todo.length) { toast('Không có tên thư mục nào thay đổi'); return; }
+  if (B.nDirConflict) { toast('Còn tên bị trùng (màu đỏ) – sửa mẫu tên trước'); return; }
+  const { text, n } = buildDirBatText();
+  const ta = h('textarea', { readonly: true, style: 'width:100%;height:320px;font:12px/1.4 Consolas,monospace;white-space:pre' }, text);
+  const doDownload = () => { downloadBlob(new Blob(['﻿' + text], { type: 'text/plain;charset=utf-8' }), 'doi_ten_thu_muc.bat'); toast('Đã tải tệp doi_ten_thu_muc.bat vào thư mục Tải xuống (Downloads)', 5000); };
+  dialog({
+    title: `Lệnh đổi tên ${n} thư mục (dùng trên Windows)`, wide: true,
+    body: h('div', null,
+      h('div', { class: 'small muted', style: 'margin-bottom:8px' }, 'Nội dung bên dưới là lệnh "ren" của Windows – xem trước rồi bấm "Tải tệp .bat", chép tệp đó vào đúng thư mục cha (chứa các thư mục con cần đổi tên), rồi nhấp đúp để chạy. Không chạy được trên Android/Mac.'),
+      ta),
+    buttons: [
+      { text: '📋 Sao chép', fn: async () => { try { await navigator.clipboard.writeText(text); toast('Đã sao chép – dán vào Notepad rồi lưu với đuôi .bat'); } catch (e) { ta.select(); document.execCommand('copy'); toast('Đã sao chép'); } return false; } },
+      { text: '⬇ Tải tệp .bat', cls: 'primary', fn: () => { doDownload(); return false; } },
+      { text: 'Đóng' },
+    ],
+  });
+}
 
 /* ---------- xếp tệp vào thư mục theo loại ---------- */
 async function moveFileTo(e, destDir, name) {
@@ -12004,9 +12772,9 @@ function buildDirsPane() {
     h('fieldset', null, h('legend', null, 'Định dạng chữ'), brow('Chữ hoa/thường', bsel2(r, 'caseMode', [['none', 'Giữ nguyên'], ['lower', 'chữ thường'], ['upper', 'CHỮ HOA'], ['title', 'Viết Hoa Từng Từ'], ['sentence', 'Chỉ hoa chữ đầu']], re)),
       brow('Khoảng trắng', bsel2(r, 'space', [['keep', 'Giữ nguyên'], ['_', 'Đổi thành _'], ['-', 'Đổi thành -'], ['none', 'Xóa hết']], re)), brow('', bchk(r, 'noDia', 'Bỏ dấu tiếng Việt', re))),
     h('fieldset', null, h('legend', null, 'Thực hiện'),
-      h('div', { class: 'btnrow' }, h('button', { id: 'bRenDirs', class: 'primary', onclick: renameDirs }, '✔ Đổi tên các thư mục đã chọn'), h('button', { onclick: exportDirCsv }, '⬇ Bảng đối chiếu CSV')),
+      h('div', { class: 'btnrow' }, h('button', { id: 'bRenDirs', class: 'primary', onclick: renameDirs }, '✔ Đổi tên các thư mục đã chọn'), h('button', { onclick: exportDirBat }, '⬇ Xuất lệnh đổi tên (.bat)'), h('button', { onclick: exportDirCsv }, '⬇ Bảng đối chiếu CSV')),
       h('div', { id: 'dStat', class: 'small' }),
-      h('div', { class: 'small muted' }, 'Chrome/Edge máy tính đổi tên thư mục tại chỗ. Nếu trình duyệt không hỗ trợ, phần mềm sẽ hỏi trước khi sao chép nội dung sang tên mới.')));
+      h('div', { class: 'small muted' }, 'Chrome/Edge máy tính đổi tên thư mục tại chỗ. Nếu trình duyệt không hỗ trợ, phần mềm sẽ hỏi trước khi sao chép nội dung sang tên mới – với thư mục lớn, dùng nút “Xuất lệnh đổi tên (.bat)” sẽ nhanh hơn nhiều và không cần sao chép.')));
 }
 
 /* ===================== APP 5: tab HÀNG LOẠT (đổi tên + xử lý ảnh + xuất) ===================== */
@@ -12162,7 +12930,7 @@ function renderBatch() {
 }
 async function openBatchInEditor(e) {
   if (e.type !== 'img' && e.type !== 'pdf') { toast('Chỉ mở được ảnh và PDF trong trình chỉnh sửa'); return; }
-  $('#tabs button[data-tab=edit]').click();
+  switchView('edit');
   await openImageFiles([e.file]);
 }
 
@@ -12412,10 +13180,10 @@ function updateViewBar() {
 function initBatch() { buildBatchUI(); }
 
 /* ---------- Khởi chạy ---------- */
-init(); initBatch();
+init(); initBatch(); switchView('home'); navInit();
 window.addEventListener('error', e => { try { toast('Lỗi: ' + (e.message || 'không rõ'), 6000); } catch (_) { /* bỏ qua */ } });
 window.addEventListener('unhandledrejection', e => { try { const m = e.reason && (e.reason.message || String(e.reason)); if (m && !/AbortError|The user aborted/.test(m)) toast('Lỗi: ' + m, 6000); } catch (_) { /* bỏ qua */ } });
-window.XA = { VI, viTranslate, viOffline, viBatch, viGet, B, FTYPES, ftypeOf, openDirHandle, reloadCur, enterDir, upDir, setView, renameDirs, organizeRun, recomputeDirNames, dichToolReady, dichSend, DICHT, XA_DICH, pdfToolReady, pdfSendFiles, pdfImportRun, pdfImportDialog, editorImages, PDFT, PL, plBuild, plUseFiles, plUseDir, plRenameItem, plDoRename, plSelect, plRender, plVisible, plInit, rotateLayerBy, setLayerAngle, fitDocToLayer, layerFillsDoc, aiMaskRegion, cropToSel, cropToLayer, autoTrim, contentBounds, selToNewTab, cropSetBox, get D() { return D; }, S, O, B, C, TOOLS, setTool, commit, undo, redo, openImageFiles, newDocFromCanvas, mkCanvas, renderComposite, selectAll, deselect, applySelection, bakeLayer, activeLayer,
+window.XA = { VI, viTranslate, viOffline, viBatch, viGet, B, FTYPES, ftypeOf, openDirHandle, reloadCur, enterDir, upDir, setView, renameDirs, organizeRun, recomputeDirNames, exportDirBat, dirRenameOps, buildDirBatText, AICAP, aicapKey, aicapSetKey, aicapSetModel, aicapCall, plAiSuggest, plAiBatch, plCapSave, AITAG, aitagStatus, aitagDownload, aitagPickFile, aitagDel, aitagLoadLabels, aitagSession, aitagInfer, aitagEnsure, plAiSuggestOffline, plAiBatchOffline, aiPut, aiGet, switchView, homeBuild, homeOpenBatch, homeOpenImageFirst, HOME_ICONS, plDeleteItems, plDeleteConfirm, plSelItems, dichToolReady, dichSend, DICHT, XA_DICH, pdfToolReady, pdfSendFiles, pdfImportRun, pdfImportDialog, editorImages, PDFT, openChenChuDialog, pdfSendCurrentToText, PL, plBuild, plUseFiles, plUseDir, plRenameItem, plDoRename, plSelect, plRender, plVisible, plInit, plSendToText, plDetail, reorderLayer, get lyGridMode() { return lyGridMode; }, set lyGridMode(v) { lyGridMode = v; }, rotateLayerBy, setLayerAngle, fitDocToLayer, layerFillsDoc, aiMaskRegion, cropToSel, cropToLayer, autoTrim, contentBounds, selToNewTab, cropSetBox, get D() { return D; }, S, O, B, C, TOOLS, setTool, commit, undo, redo, openImageFiles, newDocFromCanvas, mkCanvas, renderComposite, selectAll, deselect, applySelection, bakeLayer, activeLayer, copySel, pasteClip, pasteInternalClip, pasteFromMenu, TABS, tabsSwitch, tabsLoad, aiRemoveBgLayer, aiRemoveBg, layerFromCanvas, addLayerObj, selShapeValid, layerViaCopy, deleteKey, clipToSelection, mergeSmart, lySelIds, layerClick, NAV, navDesired, get curDlg() { return curDlg; },
   fitView, resizeDocTo, rotateDocFree, flipDoc, rotateDoc90, cropDocTo, applyCrop, canvasResize, createTextLayer, mergeDown, dupLayer, addEmptyLayer, layerViaCopy, eraseSel, fillSel, saveProject, colorDialog, closeDialog,
   harmonizeDialog, harmonizeAnalyze, AI, aiPut, aiStatus, aiOrtCached, aiSelectRect, aiSelectAll, aiRemoveBg, TABS, tabsSwitch, tabsClose, layerFromCanvas, addLayerObj, handlePositions, delLayer, processEntry, addBatchFileList, addBatchEntries, renameInPlace, recomputeNames, adjustDialog, quickFilter, openProject, selModify, insertBuiltin, applyPersp, setToolbar, quickSelect, recolorDialog, patternDialog, garmentDialog, outfitDialog, clipToSelection, makeTile, garmentInsert, pz: () => pz, setZoom, render, rq };
 
